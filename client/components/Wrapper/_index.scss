@@ -1,0 +1,32 @@
+.wrapper {
+  display: flex;
+  min-height: 500px;
+  min-height: 100vh;
+  flex-direction: column;
+  transition: all 250ms ease-out;
+
+  .wrapper__content {
+    flex: 1;
+    transition: all 250ms ease-out;
+  }
+
+  &.wrapper--anim {
+    .header {
+      animation: app-small-appear 250ms linear 0ms 1 alternate;
+    }
+    .wrapper__content,
+    .footer {
+      animation: app-small-appear-inverse 250ms linear 0ms 1 alternate;
+    }
+
+    &.wrapper--complete {
+      .header,
+      .wrapper__content {
+        animation: app-small-appear 250ms linear 0ms 1 alternate;
+      }
+      .footer {
+        animation: app-small-appear-inverse 250ms linear 0ms 1 alternate;
+      }
+    }
+  }
+}
