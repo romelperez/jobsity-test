@@ -2,7 +2,7 @@ import { ACTIONS } from 'client/consts';
 import reducer from './';
 
 describe('Reducers', function () {
-  describe('Attrs', function () {
+  describe('Categories', function () {
 
     it('Default state', function () {
       const actual = reducer();

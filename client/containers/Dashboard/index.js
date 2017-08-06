@@ -13,7 +13,7 @@ import Loading from 'client/components/Loading';
 const mapStateToProps = function (state) {
   return {
     cats: state.cats,
-    attrs: state.attrs,
+    fields: state.fields,
   };
 };
 

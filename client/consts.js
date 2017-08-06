@@ -1,8 +1,8 @@
 export const ACTIONS = {
 
-  // Attrs
-  ATTRS_SAVE: 'ATTRS_SAVE',
-  ATTRS_REMOVE: 'ATTRS_REMOVE',
+  // Fields
+  FIELDS_SAVE: 'FIELDS_SAVE',
+  FIELDS_REMOVE: 'FIELDS_REMOVE',
 
   // Categories
   CATS_FETCHING: 'CATS_FETCHING',
