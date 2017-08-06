@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const nunjucks = require('nunjucks');
 const compression = require('compression');
 const helmet = require('helmet');
+const uuid = require('uuid');
 
 const port = process.env.PORT || 2000;
 const production = process.env.NODE_ENV === 'production';
@@ -17,6 +18,31 @@ nunjucks.configure(`${process.cwd()}/server/views`, {
 server.use(morgan(':remote-addr - :method :url :status :response-time ms - :res[content-length]'));
 server.use(helmet());
 server.use(compression());
+
+server.get('/api/cats', (req, res) => {
+  res.json([
+    {
+      _id: uuid.v4(),
+      name: 'Device Info',
+    },
+    {
+      _id: uuid.v4(),
+      name: 'Sensors',
+    },
+    {
+      _id: uuid.v4(),
+      name: 'Settings',
+    },
+    {
+      _id: uuid.v4(),
+      name: 'Commands',
+    },
+    {
+      _id: uuid.v4(),
+      name: 'Metadata',
+    }
+  ]);
+});
 
 // Public files
 server.use(express.static(`${process.cwd()}/public`));

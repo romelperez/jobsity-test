@@ -3,4 +3,8 @@ export const ACTIONS = {
   // Attrs
   ATTRS_SAVE: 'ATTRS_SAVE',
   ATTRS_REMOVE: 'ATTRS_REMOVE',
+
+  // Categories
+  CATS_FETCHING: 'CATS_FETCHING',
+  CATS_SAVE: 'CATS_SAVE',
 };
