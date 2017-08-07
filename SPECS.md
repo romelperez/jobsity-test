@@ -13,7 +13,8 @@ are valid.
 The form has the list of categories and a button to save or cancel it.
 
 - Every category has an "Add" button to create a new field
-- All the fields are open to be edited all the time
+- All fields are open to be edited all the time
+- Fields can be swapped by position
 - Each field has a "Remove" button to delete it
 
 The save button will display a JSON collection with all the fields. Every field has
