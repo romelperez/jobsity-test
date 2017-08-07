@@ -1,10 +1,17 @@
 export const ACTIONS = {
 
   // Fields
+  FIELDS_ADD: 'FIELDS_ADD',
   FIELDS_SAVE: 'FIELDS_SAVE',
+  FIELDS_MOVE: 'FIELDS_MOVE',
   FIELDS_REMOVE: 'FIELDS_REMOVE',
 
   // Categories
   CATS_FETCHING: 'CATS_FETCHING',
   CATS_SAVE: 'CATS_SAVE',
+};
+
+export const TYPES = {
+  STRING: 'STRING',
+  OBJECT: 'OBJECT',
 };

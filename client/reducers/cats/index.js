@@ -18,7 +18,7 @@ export default function reducer (state = initial, { type, payload } = {}) {
       const list = mergeCollection(
         state.list,
         Array.isArray(payload) ? payload : [payload],
-        { id: '_id', shallow: true }
+        { id: '_id' }
       );
       return { ...state, list };
     }
