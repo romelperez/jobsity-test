@@ -1,26 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { withRouter, Link } from 'react-router';
 import Row from 'react-materialize/lib/Row';
 import Col from 'react-materialize/lib/Col';
+import Button from 'react-materialize/lib/Button';
 
-import * as actionsCats from 'client/actions/cats';
 import Wrapper, { WrapperContent } from 'client/components/Wrapper';
 import Header from 'client/components/Header';
 import Footer from 'client/components/Footer';
-import Loading from 'client/components/Loading';
 
-const mapStateToProps = function (state) {
-  return {
-    cats: state.cats,
-    fields: state.fields,
-  };
+const mapStateToProps = function () {
+  return {};
 };
 
-const mapDispatchToProps = function (dispatch) {
-  return {
-    handleFetchCats: (...args) => dispatch(actionsCats.fetch(...args)),
-  };
+const mapDispatchToProps = function () {
+  return {};
 };
 
 class DashboardApp extends Component {
@@ -29,21 +23,15 @@ class DashboardApp extends Component {
     super(...arguments);
   }
 
-  componentDidMount () {
-    this.props.handleFetchCats();
-  }
-
   render () {
-
-    const { isFetching, list: cats } = this.props.cats;
-
     return (
       <Wrapper className='dashboard-app'>
         <Header />
         <WrapperContent>
           <Row>
             <Col s={12}>
-              { isFetching && <Loading /> }
+              <p>Build forms with configurable fields by categories.</p>
+              <Link to='/builder'><Button waves='light'>Create New Form</Button></Link>
             </Col>
           </Row>
         </WrapperContent>
