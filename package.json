@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "NODE_PATH=./ node server/index.js",
-    "start:production": "NODE_ENV=production npm run start",
+    "start:production": "NODE_ENV=production PORT=80 npm run start",
     "test": "npm run test-lint && TRAVIS=true npm run test-client",
     "test-lint": "eslint --cache --quiet ./client",
     "test-client": "NODE_ENV=test NODE_PATH=./ karma start karma.conf.js",

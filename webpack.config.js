@@ -27,4 +27,5 @@ module.exports = Object.assign(baseSettings, {
     path: path.resolve(__dirname, './public/js/'),
     filename: '[name].js'
   },
+  plugins,
 });
