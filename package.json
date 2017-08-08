@@ -8,7 +8,8 @@
     "test": "npm run test-lint && TRAVIS=true npm run test-client",
     "test-lint": "eslint --cache --quiet ./client",
     "test-client": "NODE_ENV=test NODE_PATH=./ karma start karma.conf.js",
-    "build": "NODE_ENV=production gulp sass && NODE_ENV=production webpack"
+    "build": "NODE_ENV=production gulp sass && NODE_ENV=production webpack",
+    "postinstall": "npm run build"
   },
   "dependencies": {
     "autoprefixer": "^6.4.0",
