@@ -14,6 +14,7 @@ import Wrapper, { WrapperContent } from 'client/components/Wrapper';
 import Header from 'client/components/Header';
 import Footer from 'client/components/Footer';
 import Loading from 'client/components/Loading';
+import Field from 'client/components/Field';
 
 const mapStateToProps = function (state) {
   return {
@@ -26,6 +27,7 @@ const mapDispatchToProps = function (dispatch) {
   return {
     handleFetchCats: (...args) => dispatch(actionsCats.fetch(...args)),
     handleAdd: (...args) => dispatch(actionsFields.add(...args)),
+    handleSave: (...args) => dispatch(actionsFields.save(...args)),
   };
 };
 
@@ -69,18 +71,29 @@ class BuilderApp extends Component {
           </Row>
 
           { !isFetching && !!cat && (
-            <div>
+            <div ref={el => (this.content = el)}>
 
               <Tabs className='z-depth-1' onChange={this.onTab}>
                 { catsList.map(el => (
                   <Tab key={el._id} title={el.name} active={el._id === catId}>
-                    <p>{el.name}</p>
-                    <Button
-                      waves='light'
-                      onClick={() => this.onAdd(el._id)}
-                    >
-                      <i className='mdi mdi-plus' /> Add Attribute
-                    </Button>
+                    <div className='dashboard-app__field'>
+                      { !this.getFieldsByCat(el._id).length && (
+                        <p>There are no attributes in this category.</p>
+                      ) }
+                      { this.getFieldsByCat(el._id).map(field => (
+                        <Field key={field._id} {...field} onChange={this.onChange} />
+                      )) }
+                      <Row>
+                        <Col s={12}>
+                          <Button
+                            waves='light'
+                            onClick={() => this.onAdd(el._id)}
+                          >
+                            <i className='mdi mdi-plus' /> Add Attribute
+                          </Button>
+                        </Col>
+                      </Row>
+                    </div>
                   </Tab>
                 )) }
               </Tabs>
@@ -129,7 +142,21 @@ class BuilderApp extends Component {
   }
 
   onAdd = (catId) => {
-    this.props.handleAdd({ cat: catId });
+
+    const cats = this.getFieldsByCat(catId);
+    const fieldEmpty = cats.find(el => !el.params.name);
+
+    // If there is at least one field without name, focus it, otherwise add a new one.
+    if (fieldEmpty) {
+      $(this.content).find(`.field[data-id="${fieldEmpty._id}"] input[name="name"]`).trigger('focus');
+    }
+    else {
+      this.props.handleAdd({ cat: catId });
+    }
+  }
+
+  onChange = (field) => {
+    this.props.handleSave(field);
   }
 
   onCancel = (ev) => {
@@ -140,8 +167,14 @@ class BuilderApp extends Component {
   onSave = (ev) => {
     ev.preventDefault();
 
+    // TODO:
     // DEBUG:
     console.log('onSave');
+  }
+
+  getFieldsByCat (cat) {
+    const { list: fields } = this.props.fields;
+    return fields.filter(el => el.params.cat === cat);
   }
 }
 

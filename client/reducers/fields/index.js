@@ -2,7 +2,7 @@ import mergeCollection from 'prhone-tools/merge-collections';
 import moveInArray from 'prhone-tools/move-in-array';
 import uuid from 'uuid';
 import maxBy from 'lodash/maxBy';
-import { ACTIONS, TYPES } from 'client/consts';
+import { ACTIONS, TYPES, FORMATS } from 'client/consts';
 
 const initial = {
   list: [],
@@ -28,7 +28,7 @@ export default function reducer (state = initial, { type, payload } = {}) {
           description: '',
           defaultTo: '',
           type: TYPES.STRING,
-          format: '',
+          format: FORMATS.NONE,
           enum: [],
           min: '',
           max: '',

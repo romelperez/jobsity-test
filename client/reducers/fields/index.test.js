@@ -1,4 +1,4 @@
-import { ACTIONS, TYPES } from 'client/consts';
+import { ACTIONS, TYPES, FORMATS } from 'client/consts';
 import reducer from './';
 
 describe('Reducers', function () {
@@ -30,7 +30,7 @@ describe('Reducers', function () {
         description: '',
         defaultTo: '',
         type: TYPES.STRING,
-        format: '',
+        format: FORMATS.NONE,
         enum: [],
         min: '',
         max: '',

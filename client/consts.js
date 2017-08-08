@@ -15,3 +15,12 @@ export const TYPES = {
   STRING: 'STRING',
   OBJECT: 'OBJECT',
 };
+
+export const FORMATS = {
+  NONE: '',
+  NUMBER: 'NUMBER',
+  BOOLEAN: 'BOOLEAN',
+  DATETIME: 'DATETIME',
+  CDATA: 'CDATA',
+  URI: 'URI',
+};
