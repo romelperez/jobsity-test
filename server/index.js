@@ -5,7 +5,7 @@ const compression = require('compression');
 const helmet = require('helmet');
 
 const port = process.env.PORT || 2000;
-const production = process.env.NODE_ENV === 'production';
+const production = process.env.NODE_ENV === 'production' || process.env.HEROKU;
 const server = express();
 
 nunjucks.configure(`${process.cwd()}/server/views`, {
