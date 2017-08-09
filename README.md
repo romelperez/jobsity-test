@@ -6,3 +6,22 @@
 
 - [Specifications](./SPECS.md)
 - [romelperez-jobsity.herokuapp.com](http://romelperez-jobsity.herokuapp.com)
+
+## Setup
+
+Requires Node.js v6+, webpack and gulp.
+
+```bash
+$ npm install
+$ npm install -g webpack gulp
+```
+
+## API
+
+| Command               | Description                     |
+| :-------------------- | :------------------------------ |
+| `npm run start`       | Start the server in development |
+| `npm run build`       | Build assets in production mode |
+| `npm run test`        | Run test suites                 |
+| `webpack -w`          | Start JS build with watcher     |
+| `gulp`                | Start CSS build with watcher    |
