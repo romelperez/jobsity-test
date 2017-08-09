@@ -16,6 +16,7 @@ const render = function () {
     </Provider>
   );
   const root = document.querySelector('#app');
+  if (!root) return console.log('No container found.');
   ReactDOM.render(app, root);
 };
 
