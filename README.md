@@ -5,7 +5,7 @@
 [![license](https://img.shields.io/github/license/romelperez/jobsity-test.svg?maxAge=2592000)](./LICENSE)
 
 - [Specifications](./SPECS.md)
-- [Tasks](./SPECS.md)
+- [Tasks](./TASKS.md)
 - [Preview](http://romelperez-jobsity.herokuapp.com)
 
 ## Setup
