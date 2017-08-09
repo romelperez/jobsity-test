@@ -27,7 +27,9 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'node_modules/babel-polyfill/dist/polyfill.js',
+      'public/js/jquery.min.js',
+      'public/js/materialize.min.js',
+      'public/js/app.js',
       'client/**/*.test.js',
     ],
 
