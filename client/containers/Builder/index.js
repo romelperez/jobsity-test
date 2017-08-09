@@ -59,6 +59,12 @@ class BuilderApp extends Component {
     const catsList = cats.sort((a, b) => a.position - b.position);
     const cat = cats.find(el => el._id === catId);
 
+    // Get the list of names of all fields.
+    const names = this.props.fields.list.map(el => ({
+      _id: el._id,
+      name: el.params.name,
+    }));
+
     return (
       <Wrapper className='dashboard-app'>
         <Header />
@@ -73,16 +79,31 @@ class BuilderApp extends Component {
           { !isFetching && !!cat && (
             <div ref={el => (this.content = el)}>
 
+              {/* Categories in each tab */}
               <Tabs className='z-depth-1' onChange={this.onTab}>
                 { catsList.map(el => (
                   <Tab key={el._id} title={el.name} active={el._id === catId}>
-                    <div className='dashboard-app__field'>
-                      { !this.getFieldsByCat(el._id).length && (
-                        <p>There are no attributes in this category.</p>
-                      ) }
-                      { this.getFieldsByCat(el._id).map(field => (
-                        <Field key={field._id} {...field} onChange={this.onChange} />
-                      )) }
+                    <div className='dashboard-app__fields'>
+
+                      {/* Each category fields */}
+                      { (() => {
+                        const catFields = this.getFieldsByCat(el._id);
+
+                        if (!catFields.length) {
+                          return <p>There are no attributes in this category.</p>;
+                        }
+
+                        return catFields.map(field => (
+                          <Field
+                            key={field._id}
+                            {...field}
+                            names={names}
+                            onChange={this.onChange}
+                          />
+                        ));
+                      })() }
+
+                      {/* Category options */}
                       <Row>
                         <Col s={12}>
                           <Button
@@ -104,7 +125,11 @@ class BuilderApp extends Component {
                     <i className='mdi mdi-logout' /> Cancel
                   </Button>
                   {' '}
-                  <Button waves='light' onClick={this.onSave}>
+                  <Button
+                    waves='light'
+                    onClick={this.onSave}
+                    disabled={this.isSaveDisabled()}
+                  >
                     <i className='mdi mdi-content-save' /> Save
                   </Button>
                 </Col>
@@ -167,9 +192,17 @@ class BuilderApp extends Component {
   onSave = (ev) => {
     ev.preventDefault();
 
+    if (this.isSaveDisabled()) return;
+
     // TODO:
     // DEBUG:
     console.log('onSave');
+  }
+
+  isSaveDisabled = () => {
+    const { list: fields } = this.props.fields;
+    const hasInvalid = fields.find(el => !el.isValid);
+    return !!hasInvalid;
   }
 
   getFieldsByCat (cat) {

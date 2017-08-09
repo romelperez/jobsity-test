@@ -11,8 +11,11 @@ export default function Footer (props) {
   return (
     <div className={cls} {...etc}>
       <Row>
-        <Col s={12}>
+        <Col s={6}>
           <p>&copy; 2017 <a href='https://romelperez.com' target='romelperez'>Romel Pérez</a>, <a href='http://jobsity.com' target='jobsity'>Jobsity</a></p>
+        </Col>
+        <Col s={6} className='right-align'>
+          <p><a href='https://github.com/romelperez/jobsity-test' target='github'>Source Code</a></p>
         </Col>
       </Row>
     </div>

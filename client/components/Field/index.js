@@ -1,3 +1,5 @@
+/* eslint no-unused-vars: [0] */
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
@@ -12,6 +14,12 @@ export default class Field extends Component {
 
   constructor () {
     super(...arguments);
+
+    this.state = {
+
+      // Error message if the field's name is duplicated.
+      errorName: '',
+    };
   }
 
   componentDidMount () {
@@ -49,8 +57,9 @@ export default class Field extends Component {
 
   render () {
 
-    const { _id, isValid, params, onChange, className, ...etc } = this.props;
+    const { _id, isValid, params, names, onChange, className, ...etc } = this.props;
     const cls = cx('field', className);
+    const { errorName } = this.state;
 
     return (
       <form className={cls} ref={el => (this.container = el)} data-id={_id} {...etc}>
@@ -70,6 +79,7 @@ export default class Field extends Component {
                 data-vv-display={`#f${_id}-name-display`}
               />
               <div id={`f${_id}-name-display`} />
+              { !!errorName && <div className='vv-display vv-display_error'>{errorName}</div> }
             </Row>
           </Col>
 
@@ -99,7 +109,6 @@ export default class Field extends Component {
               <Input
                 s={12}
                 type='select'
-                name='device'
                 label='Device Resource Type'
                 placeholder='Default value'
                 disabled
@@ -180,9 +189,19 @@ export default class Field extends Component {
   onChange = (ev) => {
 
     const { name, value } = ev.target;
-    const { _id, params } = this.props;
+    const { _id, params, names } = this.props;
+
+    // Validate field's name duplicity.
+    const fieldName = name === 'name' ? value : params.name;
+    const duplicatedName = !!names.
+      filter(el => el._id !== _id).
+      find(el => el.name === fieldName);
+
+    // Field is valid if does not have name duplicity or all the fields are valid.
+    const isValid = !duplicatedName && !$(this.container).vulcanval('inspect');
     const toUpdate = {
       _id,
+      isValid,
       params: {
         ...params,
         [name]: value,
@@ -194,6 +213,10 @@ export default class Field extends Component {
       toUpdate.params.defaultTo = '';
       toUpdate.params.format = FORMATS.NONE;
     }
+
+    this.setState({
+      errorName: duplicatedName ? "Field's name is duplicated." : ''
+    });
 
     this.props.onChange(toUpdate);
   }
@@ -236,10 +259,15 @@ Field.propTypes = {
     type: PropTypes.string,
     format: PropTypes.string,
   }),
+  names: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string,
+    name: PropTypes.string,
+  })),
   onChange: PropTypes.func,
 };
 
 Field.defaultProps = {
   params: {},
+  names: [],
   onChange () {},
 };
