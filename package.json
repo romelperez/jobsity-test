@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "autoprefixer": "^6.4.0",
-    "axios": "^0.14.0",
     "babel-cli": "^6.11.4",
     "babel-core": "^6.25.0",
     "babel-loader": "^6.2.4",
@@ -35,10 +34,6 @@
     "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^1.6.0",
     "helmet": "^3.8.1",
-    "i18next": "^3.4.1",
-    "jquery": "^2.2.4",
-    "lodash": "^4.17.4",
-    "materialize-css": "^0.98.2",
     "moment": "^2.18.1",
     "morgan": "^1.7.0",
     "nunjucks": "^2.4.2",
@@ -46,14 +41,9 @@
     "react": "^15.6.1",
     "react-addons-shallow-compare": "^15.6.0",
     "react-dom": "^15.6.1",
-    "react-materialize": "^0.18.4",
     "react-redux": "^4.4.6",
-    "react-router": "^3.0.5",
-    "react-router-redux": "^4.0.8",
     "react-test-renderer": "^15.6.1",
     "redux": "^3.7.0",
-    "redux-thunk": "^2.2.0",
-    "string": "^3.3.1",
     "uuid": "^3.1.0",
     "validator": "^6.3.0",
     "vulcanval": "^3.1.10",
@@ -63,7 +53,6 @@
     "babel-eslint": "^7.1.0",
     "chai": "^3.5.0",
     "chai-enzyme": "^0.5.0",
-    "chai-http": "^3.0.0",
     "enzyme": "^2.9.0",
     "eslint": "^3.8.1",
     "eslint-plugin-react": "^6.4.1",
@@ -79,8 +68,6 @@
     "karma-webpack": "^1.7.0",
     "mocha": "^3.0.0",
     "sinon": "^1.17.7",
-    "sinon-chai": "^2.11.0",
-    "rimraf": "^2.5.4",
-    "updtr": "^0.2.2"
+    "sinon-chai": "^2.11.0"
   }
 }
