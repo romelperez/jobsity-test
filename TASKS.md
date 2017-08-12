@@ -1,12 +1,15 @@
 # Jobsity Test - Tasks
 
 - [x] Setup
-- [ ] Form
-- [ ] Attributes
+- [x] Tabs
+- [ ] Attribute
     - [ ] Render structure and design
-    - [ ] Validation
     - [ ] Update
-- [ ] JSON Live Preview
+    - [ ] Validation
+    - [ ] Toggle (show/hide) manually
+    - [ ] Delete option
+- [x] Save button
+- [x] JSON Live Preview
 
 ## Feedback
 
@@ -14,11 +17,10 @@
 - [x] No cancel button
 - [ ] Decouple form as a component
 - [ ] Validate fields on input keyboard event
-- [ ] Attribute toggle (show/hide) manually
-- [ ] Attributes properties more descriptive
-- [ ] Constants names more descriptive
-- [ ] Setup more lightweight
-- [ ] Redux actions constants decoupled
-- [ ] Use React always instead of jQuery
-- [ ] Live JSON representation
+- [x] Attributes properties more descriptive
+- [x] Constants names more descriptive
+- [x] Setup more lightweight
+- [x] Redux actions constants decoupled
+- [x] Use React always instead of jQuery
+- [x] Live JSON representation
 - [ ] Responsive (plus)
