@@ -41,8 +41,5 @@ package-lock.json
 ## PROJECT
 ##
 
-public/js/*
-!public/js/.gitkeep
-
-public/css/*
-!public/css/.gitkeep
+public/app.js
+public/app.css

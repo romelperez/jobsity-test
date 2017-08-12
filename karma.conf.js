@@ -1,18 +1,4 @@
 // Karma configuration
-const webpackBase = require('./webpack.base.js');
-
-const isCI = !!process.env.TRAVIS;
-const webpackConf = Object.assign({}, webpackBase, {
-  entry: () => ({}),
-  devtool: 'inline-source-map',
-  externals: {
-    'cheerio': 'window',
-    'react/addons': true,
-    'react/lib/ExecutionEnvironment': true,
-    'react/lib/ReactContext': true,
-  }
-});
-
 module.exports = function (config) {
   config.set({
 
@@ -27,24 +13,22 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'public/js/jquery.min.js',
-      'public/js/materialize.min.js',
-      'public/js/app.js',
-      'client/**/*.test.js',
+      './node_modules/babel-polyfill/dist/polyfill.min.js',
+      './client/**/*.test.js',
     ],
 
 
     // list of files to exclude
     exclude: [
-      'public',
-      'server'
+      './public',
+      './server'
     ],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'client/**/*.js': ['webpack', 'sourcemap'],
+      './client/**/*.js': ['webpack', 'sourcemap'],
     },
 
 
@@ -68,7 +52,7 @@ module.exports = function (config) {
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: !isCI,
+    autoWatch: !process.env.TRAVIS,
 
 
     // start these browsers
@@ -78,7 +62,7 @@ module.exports = function (config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: isCI,
+    singleRun: process.env.TRAVIS,
 
 
     // Concurrency level
@@ -87,7 +71,38 @@ module.exports = function (config) {
 
 
     // Webpack
-    webpack: webpackConf,
+    webpack: {
+      entry: () => ({}),
+      resolve: {
+        modules: [
+          './',
+          './node_modules'
+        ],
+      },
+      module: {
+        rules: [{
+          test: /.js$/,
+          exclude: /(node_modules)/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                'react',
+                'es2015',
+                'stage-1'
+              ]
+            }
+          },
+        }]
+      },
+      devtool: 'inline-source-map',
+      externals: {
+        'cheerio': 'window',
+        'react/addons': true,
+        'react/lib/ExecutionEnvironment': true,
+        'react/lib/ReactContext': true,
+      }
+    },
     webpackServer: {
       noInfo: true
     },

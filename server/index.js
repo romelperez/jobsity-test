@@ -1,8 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
 const nunjucks = require('nunjucks');
-const compression = require('compression');
-const helmet = require('helmet');
 
 const port = process.env.PORT || 2000;
 const production = process.env.NODE_ENV === 'production' || process.env.HEROKU;
@@ -15,8 +13,6 @@ nunjucks.configure(`${process.cwd()}/server/views`, {
 });
 
 server.use(morgan(':remote-addr - :method :url :status :response-time ms - :res[content-length]'));
-server.use(helmet());
-server.use(compression());
 
 // Public files
 server.use(express.static(`${process.cwd()}/public`));

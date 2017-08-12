@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Row from 'react-materialize/lib/Row';
+import Col from 'react-materialize/lib/Col';
+import AppBar from 'material-ui/AppBar';
+import { Tabs, Tab } from 'material-ui/Tabs';
 
 import * as actionsCategories from 'client/actions/categories';
 import * as actionsAttributes from 'client/actions/attributes';
-import Wrapper, { WrapperContent } from 'client/components/Wrapper';
-import Header from 'client/components/Header';
-import Footer from 'client/components/Footer';
 
 const mapStateToProps = function (state) {
   return {
@@ -23,7 +24,7 @@ const mapDispatchToProps = function (dispatch) {
   };
 };
 
-class BuilderApp extends Component {
+class Attributes extends Component {
 
   constructor () {
     super(...arguments);
@@ -63,15 +64,55 @@ class BuilderApp extends Component {
   }
 
   render () {
+
+    const { list: categories } = this.props.categories;
+    const categoriesList = categories.sort((a, b) => a.position - b.position);
+
     return (
-      <Wrapper className='attributes-app'>
-        <Header />
-        <WrapperContent className='attributes-app__main'>
-        </WrapperContent>
-        <Footer />
-      </Wrapper>
+      <div className='attributes'>
+
+        {/* Header */}
+        <AppBar
+          title='Romel Pérez, Jobsity - Test'
+          showMenuIconButton={false}
+        />
+
+        {/* Content */}
+        <div className='attributes__main'>
+          <Row>
+            <Col s={12} l={8}>
+              <Tabs>
+                { categoriesList.map(category => (
+                  <Tab key={category._id} label={category.name}>
+                    <p>{category.name}</p>
+                  </Tab>
+                )) }
+              </Tabs>
+            </Col>
+            <Col s={12} l={4}>
+              <p>JSON Live</p>
+            </Col>
+          </Row>
+        </div>
+
+        {/* Footer */}
+        <Row node='footer'>
+          <Col s={12}>
+            <p>
+              &copy; 2017
+              {' '}
+              <a href='https://romelperez.com' target='romelperez'>Romel Pérez</a>,
+              {' '}
+              <a href='http://jobsity.com' target='jobsity'>Jobsity</a>
+              {' '}
+              <a href='https://github.com/romelperez/jobsity-test' target='github'>Source Code</a>
+            </p>
+          </Col>
+        </Row>
+
+      </div>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BuilderApp);
+export default connect(mapStateToProps, mapDispatchToProps)(Attributes);

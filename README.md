@@ -10,19 +10,24 @@
 
 ## Setup
 
-Requires Node.js v6+, webpack and gulp.
+Requires Node.js v6+, npm v3+.
 
 ```bash
 $ npm install
-$ npm install -g webpack gulp
 ```
 
 ## API
 
+| Command                       | Description                     |
+| :---------------------------- | :------------------------------ |
+| `npm run build`               | Build assets in production mode |
+| `npm run test`                | Run test suites                 |
+| `npm run start:production`    | Start the server in development |
+
+For development:
+
 | Command               | Description                     |
 | :-------------------- | :------------------------------ |
 | `npm run start`       | Start the server in development |
-| `npm run build`       | Build assets in production mode |
-| `npm run test`        | Run test suites                 |
-| `webpack -w`          | Start JS build with watcher     |
-| `gulp`                | Start CSS build with watcher    |
+| `npm run test-client` | Run client tests with watcher   |
+| `npm run build:watch` | Build assets with watcher       |

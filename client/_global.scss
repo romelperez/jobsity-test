@@ -3,6 +3,8 @@
  */
 
 html, body {
+  margin: 0;
+  padding: 0;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
@@ -46,19 +48,10 @@ h1, h2, h3, h4, h5, h6 {
 
 a {
   transition: all 200ms ease-out;
-  color: $link-color;
+  color: $primary-color;
 
   &:hover {
-    color: $link-color-light;
-  }
-}
-
-a[data-theme='invert'],
-[data-theme='invert'] a {
-  color: #fff;
-
-  &:hover {
-    color: $link-color;
+    color: $primary-color-light;
   }
 }
 
@@ -99,18 +92,4 @@ select::-ms-expand {
 }
 :-moz-placeholder { /* Firefox 18- */
   color: #777;
-}
-
-
-/**
- * UTILS
- */
-
-.display-table {
-  display: table;
-  width: 100%;
-}
-.display-cell {
-  display: table-cell;
-  vertical-align: middle;
 }

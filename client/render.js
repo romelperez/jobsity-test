@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import Attributes from './containers/Attributes';
 import store from './store';
@@ -8,7 +9,9 @@ import store from './store';
 const render = function () {
   const app = (
     <Provider store={store}>
-      <Attributes />
+      <MuiThemeProvider>
+        <Attributes />
+      </MuiThemeProvider>
     </Provider>
   );
   const root = document.querySelector('#app');
