@@ -1,11 +1,8 @@
 import { combineReducers } from 'redux';
-import { routerReducer } from 'react-router-redux';
-
-import cats from './cats';
-import fields from './fields';
+import categories from './categories';
+import attributes from './attributes';
 
 export default combineReducers({
-  routing: routerReducer,
-  cats,
-  fields,
+  categories,
+  attributes,
 });
