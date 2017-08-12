@@ -35,8 +35,6 @@ nbproject
 Thumbs.db
 dump.rdb
 npm-debug.log
-server/local.js
-nightwatch.local.js
 package-lock.json
 
 ##
@@ -45,8 +43,6 @@ package-lock.json
 
 public/js/*
 !public/js/.gitkeep
-!public/js/jquery.min.js
-!public/js/materialize.min.js
 
 public/css/*
 !public/css/.gitkeep
