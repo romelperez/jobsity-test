@@ -1,4 +1,6 @@
-window.vulcanval.extendLocale({
+import vulcanval from 'vulcanval';
+
+vulcanval.extendLocale({
   id: 'en',
   msgs: {
     isRangeMin: 'A number below range max is required.',
@@ -7,17 +9,17 @@ window.vulcanval.extendLocale({
   }
 });
 
-window.vulcanval.addValidator('isRangeMin', function (value = '', opts = {}) {
+vulcanval.addValidator('isRangeMin', function (value = '', opts = {}) {
   const max = this.get(opts.max);
   return +value <= +max;
 });
 
-window.vulcanval.addValidator('isRangeMax', function (value = '', opts = {}) {
+vulcanval.addValidator('isRangeMax', function (value = '', opts = {}) {
   const min = this.get(opts.min);
   return +value >= +min;
 });
 
-window.vulcanval.addValidator('isRangePrecise', function (value = '', opts = {}) {
+vulcanval.addValidator('isRangePrecise', function (value = '', opts = {}) {
   const min = +this.get(opts.min);
   const max = +this.get(opts.max);
   return (max - min) % +value === 0;
