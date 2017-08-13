@@ -13,51 +13,11 @@ import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import Chip from 'material-ui/Chip';
 import Paper from 'material-ui/Paper';
-import vulcanval from 'vulcanval';
 import { ATTRIBUTES_TYPES, ATTRIBUTES_STRING_FORMATS } from 'client/consts';
+import { vv, vvEnum } from './validation';
 
 const fieldStyle = { width: '100%' };
 const textFieldInputStyle = {};
-
-// Validator for the form.
-const vv = vulcanval({
-  fields: [{
-    name: 'name',
-    required: true,
-    validators: {
-      isAlphanumeric: true,
-      isLength: { min: 1, max: 64 },
-    },
-  }, {
-    name: 'description',
-    required: true,
-    validators: {
-      isLength: { min: 2, max: 64 },
-    },
-  }, {
-    name: 'defaultValue',
-    validators: {
-      isLength: { max: 64 },
-    },
-  }, {
-    name: 'type',
-    required: true,
-  }, {
-    name: 'format',
-  }]
-});
-
-// Validator for the enumeration field.
-const vvEnum = vulcanval({
-  fields: [{
-    name: 'enumeration',
-    required: true,
-    validators: {
-      isAlphanumeric: true,
-      isLength: { min: 1, max: 64 },
-    },
-  }]
-});
 
 export default class AttributeForm extends Component {
 
@@ -199,9 +159,103 @@ export default class AttributeForm extends Component {
 
           </Row>
 
-          {this.createTypeStringNone()}
+          { this.isTypeStringNumber() && (
+            <Row>
 
-          {this.createTypeStringNumber()}
+              {/* RANGE MIN */}
+              <Col s={12} m={6}>
+                <Row>
+                  <TextField
+                    style={fieldStyle}
+                    inputStyle={textFieldInputStyle}
+                    type='number'
+                    name='rangeMin'
+                    floatingLabelText='Range min'
+                    hintText='Range minimum'
+                    errorText={errors.rangeMin}
+                    value={params.rangeMin}
+                    onChange={ev => this.onChange('rangeMin', ev.target.value)}
+                  />
+                </Row>
+              </Col>
+
+              {/* RANGE MAX */}
+              <Col s={12} m={6}>
+                <Row>
+                  <TextField
+                    style={fieldStyle}
+                    inputStyle={textFieldInputStyle}
+                    type='number'
+                    name='rangeMax'
+                    floatingLabelText='Range max'
+                    hintText='Range maximum'
+                    errorText={errors.rangeMax}
+                    value={params.rangeMax}
+                    onChange={ev => this.onChange('rangeMax', ev.target.value)}
+                  />
+                </Row>
+              </Col>
+
+            </Row>
+          ) }
+          { this.isTypeStringNumber() && (
+            <Row>
+
+              {/* UNITS OF MEASUREMENT */}
+              <Col s={12} m={4}>
+                <Row>
+                  <TextField
+                    style={fieldStyle}
+                    inputStyle={textFieldInputStyle}
+                    type='text'
+                    name='unitsOfMeasurement'
+                    floatingLabelText='Units of Measurement'
+                    hintText='UoM (eg. mm)'
+                    errorText={errors.unitsOfMeasurement}
+                    value={params.unitsOfMeasurement}
+                    onChange={ev => this.onChange('unitsOfMeasurement', ev.target.value)}
+                  />
+                </Row>
+              </Col>
+
+              {/* PRECISION */}
+              <Col s={12} m={4}>
+                <Row>
+                  <TextField
+                    style={fieldStyle}
+                    inputStyle={textFieldInputStyle}
+                    type='number'
+                    name='precision'
+                    floatingLabelText='Precision'
+                    hintText='Precision (eg. 0.5)'
+                    errorText={errors.precision}
+                    value={params.precision}
+                    onChange={ev => this.onChange('precision', ev.target.value)}
+                  />
+                </Row>
+              </Col>
+
+              {/* ACCURACY */}
+              <Col s={12} m={4}>
+                <Row>
+                  <TextField
+                    style={fieldStyle}
+                    inputStyle={textFieldInputStyle}
+                    type='number'
+                    name='accuracy'
+                    floatingLabelText='Accuracy'
+                    hintText='Accuracy (eg. 0.5)'
+                    errorText={errors.accuracy}
+                    value={params.accuracy}
+                    onChange={ev => this.onChange('accuracy', ev.target.value)}
+                  />
+                </Row>
+              </Col>
+
+            </Row>
+          ) }
+
+          {this.createTypeStringNone()}
 
         </Paper>
       </form>
@@ -238,58 +292,50 @@ export default class AttributeForm extends Component {
 
     const { params } = this.props.attribute;
 
-    if (params.type === ATTRIBUTES_TYPES.STRING && params.format === ATTRIBUTES_STRING_FORMATS.NONE) {
+    if (params.type !== ATTRIBUTES_TYPES.STRING
+    || params.format !== ATTRIBUTES_STRING_FORMATS.NONE) return;
 
-      const { enumeration } = this.state;
+    const { enumeration } = this.state;
 
-      // Validate the key.
-      let { enumeration: enumError } = vvEnum.validate({ enumeration }) || {};
+    // Validate the key.
+    let { enumeration: enumError } = vvEnum.validate({ enumeration }) || {};
 
-      // The key must not be duplicated.
-      const isDuplicated = params.enum.find(el => el === enumeration);
-      if (isDuplicated) {
-        enumError = 'Enumeration key is duplicated.';
-      }
-
-      return (
-        <Row>
-          <Col s={12} m={4}>
-            <TextField
-              style={{ width: 'calc(100% - 100px)', marginRight: '5px' }}
-              inputStyle={textFieldInputStyle}
-              type='text'
-              name='enum'
-              floatingLabelText='Enumerations'
-              hintText='Enter value'
-              errorText={enumeration ? enumError : ''}
-              value={enumeration}
-              onChange={ev => this.setState({ enumeration: ev.target.value })}
-            />
-            <RaisedButton
-              style={{ verticalAlign: 'top', marginTop: '30px' }}
-              label='Add'
-              disabled={!!enumError}
-              onClick={this.onEnumAdd}
-            />
-          </Col>
-          <Col s={12} m={8}>
-            {params.enum.map(el => (
-              <span key={el} style={{ display: 'inline-block' }}>
-                <Chip onRequestDelete={() => this.onEnumRemove(el)}>{el}</Chip>
-              </span>
-            ))}
-          </Col>
-        </Row>
-      );
+    // The key must not be duplicated.
+    const isDuplicated = params.enum.find(el => el === enumeration);
+    if (isDuplicated) {
+      enumError = 'Enumeration key is duplicated.';
     }
-  }
 
-  /**
-   * Create the elements when the type is STRING and the format is NUMBER.
-   * @return {React}
-   */
-  createTypeStringNumber () {
-    //
+    return (
+      <Row>
+        <Col s={12} m={4}>
+          <TextField
+            style={{ width: 'calc(100% - 100px)', marginRight: '5px' }}
+            inputStyle={textFieldInputStyle}
+            type='text'
+            name='enum'
+            floatingLabelText='Enumerations'
+            hintText='Enter value'
+            errorText={enumeration ? enumError : ''}
+            value={enumeration}
+            onChange={ev => this.setState({ enumeration: ev.target.value })}
+          />
+          <RaisedButton
+            style={{ verticalAlign: 'top', marginTop: '30px' }}
+            label='Add'
+            disabled={!!enumError}
+            onClick={this.onEnumAdd}
+          />
+        </Col>
+        <Col s={12} m={8}>
+          {params.enum.map(el => (
+            <span key={el} style={{ display: 'inline-block', marginTop: '5px' }}>
+              <Chip onRequestDelete={() => this.onEnumRemove(el)}>{el}</Chip>
+            </span>
+          ))}
+        </Col>
+      </Row>
+    );
   }
 
   /**
@@ -367,6 +413,12 @@ export default class AttributeForm extends Component {
     return params.type !== ATTRIBUTES_TYPES.STRING;
   }
 
+  isTypeStringNumber () {
+    const { params } = this.props.attribute;
+    return params.type === ATTRIBUTES_TYPES.STRING
+    && params.format === ATTRIBUTES_STRING_FORMATS.NUMBER;
+  }
+
   /**
    * Normalize a params object to update.
    * We set only the allowed properties with values in each case.
@@ -380,6 +432,17 @@ export default class AttributeForm extends Component {
     if (params.type !== ATTRIBUTES_TYPES.STRING
     || params.format !== ATTRIBUTES_STRING_FORMATS.NONE) {
       params.enum = [];
+    }
+
+    // If user changes and the type is different from STRING and the format is
+    // different from NUMBER.
+    if (params.type !== ATTRIBUTES_TYPES.STRING
+    || params.format !== ATTRIBUTES_STRING_FORMATS.NUMBER) {
+      params.unitsOfMeasurement = '';
+      params.rangeMin = '';
+      params.rangeMax = '';
+      params.precision = '';
+      params.accuracy = '';
     }
 
     // If user changes the type to object.
