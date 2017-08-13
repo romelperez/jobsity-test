@@ -72,8 +72,7 @@ module.exports = {
           options: {
             includePaths: [
               './',
-              './node_modules/materialize-css/sass',
-              './node_modules/vulcanval/src/scss'
+              './node_modules/materialize-css/sass'
             ],
             sourceMap: !production,
             outputStyle: production ? 'compressed' : 'nested',

@@ -116,7 +116,7 @@ class Attributes extends Component {
               {' '}
               <a href='https://romelperez.com' target='romelperez'>Romel Pérez</a>,
               {' '}
-              <a href='http://jobsity.com' target='jobsity'>Jobsity</a>
+              <a href='http://jobsity.com' target='jobsity'>Jobsity</a>,
               {' '}
               <a href='https://github.com/romelperez/jobsity-test' target='github'>Source Code</a>
             </p>
@@ -129,6 +129,14 @@ class Attributes extends Component {
 
   onAdd = (categoryId) => {
     this.props.handleAttributesAdd({ categoryId });
+  }
+
+  onChange = (attribute) => {
+    this.props.handleAttributesSave(attribute);
+  }
+
+  onRemove = (attributeId) => {
+    this.props.handleAttributesRemove(attributeId);
   }
 
   isSaveDisabled = () => {
@@ -146,7 +154,12 @@ class Attributes extends Component {
     }
 
     return categoryAttributes.map(el => (
-      <AttributeForm key={el._id} {...el} />
+      <AttributeForm
+        key={el._id}
+        {...el}
+        onChange={this.onChange}
+        onRemove={this.onRemove}
+      />
     ));
   }
 

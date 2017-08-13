@@ -93,6 +93,13 @@ module.exports = function (config) {
               ]
             }
           },
+        }, {
+          test: /\.scss$/,
+          use: [{
+            loader: 'css-loader'
+          }, {
+            loader: 'sass-loader',
+          }],
         }]
       },
       devtool: 'inline-source-map',
