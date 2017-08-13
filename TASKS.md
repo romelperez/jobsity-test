@@ -2,13 +2,15 @@
 
 - [x] Setup
 - [x] Tabs
-- [ ] Attribute
-    - [ ] Render structure and design
+- [x] Attribute
+    - [x] Render structure and design
     - [x] Update
-    - [ ] Validation
+    - [x] Validation
     - [x] Name duplicity validation
-    - [ ] Delete option
-    - [ ] Toggle (show/hide) manually
+    - [x] Delete option
+    - [x] Toggle (show/hide) manually
+    - [ ] Validate defaultValue based on params
+    - [ ] Value format as NONE is not rendering properly in selector
 - [x] Save button
 - [x] JSON Live Preview
 

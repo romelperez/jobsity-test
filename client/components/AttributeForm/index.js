@@ -9,6 +9,7 @@ import Row from 'react-materialize/lib/Row';
 import Col from 'react-materialize/lib/Col';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
+import Toggle from 'material-ui/Toggle';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import Chip from 'material-ui/Chip';
@@ -40,14 +41,37 @@ export default class AttributeForm extends Component {
   render () {
 
     const { attribute, names, onChange, onRemove, className, ...etc } = this.props;
-    const cls = cx('attribute-form', className);
     const { _id, isValid, params } = attribute;
-    const { errors } = this.state;
+    const { isToggled, errors } = this.state;
+    const cls = cx('attribute-form', {
+      'attribute-form--only-main-fields': isToggled
+    }, className);
 
     return (
       <form className={cls} ref={el => (this.container = el)} data-id={_id} {...etc}>
-        <Paper zDepth={1} style={{ marginBottom: '1rem', padding: '1rem' }}>
-          <Row>
+        <Paper
+          zDepth={1}
+          className='attribute-form__paper'
+          style={{ position: 'relative', marginBottom: '1rem', padding: '1rem' }}
+        >
+
+          {/* Remove */}
+          <RaisedButton
+            style={{ position: 'absolute', right: '10px', top: '10px' }}
+            onClick={() => onRemove(_id)}
+          >
+            <i className='mdi mdi-delete' /> Remove
+          </RaisedButton>
+
+          {/* Toggle */}
+          <div style={{ position: 'absolute', right: '150px', top: '20px' }}>
+            <Toggle
+              defaultToggled={isToggled}
+              onToggle={(ev, val) => this.setState({ isToggled: val })}
+            />
+          </div>
+
+          <Row className='attribute-form__main-fields'>
 
             {/* NAME */}
             <Col s={12} m={4}>
@@ -128,7 +152,6 @@ export default class AttributeForm extends Component {
                   style={fieldStyle}
                   name='type'
                   floatingLabelText='Data Type'
-                  hintText='Select the data type'
                   errorText={errors.type}
                   value={params.type}
                   onChange={(ev, ind, value) => this.onChange('type', value)}
@@ -146,7 +169,6 @@ export default class AttributeForm extends Component {
                   style={fieldStyle}
                   name='format'
                   floatingLabelText='Format'
-                  hintText='Select the format'
                   disabled={this.isFormatDisabled()}
                   errorText={errors.format}
                   value={params.format}
@@ -308,7 +330,7 @@ export default class AttributeForm extends Component {
 
     return (
       <Row>
-        <Col s={12} m={4}>
+        <Col s={12} m={6}>
           <TextField
             style={{ width: 'calc(100% - 100px)', marginRight: '5px' }}
             inputStyle={textFieldInputStyle}
@@ -327,9 +349,9 @@ export default class AttributeForm extends Component {
             onClick={this.onEnumAdd}
           />
         </Col>
-        <Col s={12} m={8}>
+        <Col s={12} m={6}>
           {params.enum.map(el => (
-            <span key={el} style={{ display: 'inline-block', marginTop: '5px' }}>
+            <span key={el} style={{ display: 'inline-block', margin: '5px 5px 0 0' }}>
               <Chip onRequestDelete={() => this.onEnumRemove(el)}>{el}</Chip>
             </span>
           ))}
@@ -389,6 +411,7 @@ export default class AttributeForm extends Component {
 
     let errors = vv.validate(params);
     const isValid = !duplicatedName && !errors;
+    const isToggled = !isValid ? false : this.state.isToggled;
 
     // If the name is duplicated, set it as a property name error.
     if (duplicatedName) {
@@ -398,7 +421,7 @@ export default class AttributeForm extends Component {
 
     const toUpdate = { _id: attribute._id, isValid, params };
 
-    this.setState({ errors: errors || {} });
+    this.setState({ errors: errors || {}, isToggled });
 
     this.props.onChange(toUpdate);
   }

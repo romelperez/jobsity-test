@@ -4,4 +4,18 @@
   .row {
     margin-bottom: 0;
   }
+  .attribute-form__main-fields {
+    //
+  }
+
+  &.attribute-form--only-main-fields {
+    .attribute-form__paper {
+      > .row {
+        display: none;
+      }
+      > .attribute-form__main-fields {
+        display: block;
+      }
+    }
+  }
 }

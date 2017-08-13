@@ -78,7 +78,7 @@ class Attributes extends Component {
         {/* Content */}
         <div className='attributes__main'>
           <Row>
-            <Col s={12} l={8}>
+            <Col s={12} l={7}>
               <Tabs>
                 { categoriesList.map(category => (
                   <Tab key={category._id} label={category.name}>
@@ -101,7 +101,7 @@ class Attributes extends Component {
                 </Col>
               </Row>
             </Col>
-            <Col s={12} l={4}>
+            <Col s={12} l={5}>
               <p><b>Attributes as JSON:</b></p>
               {this.getJSON()}
             </Col>

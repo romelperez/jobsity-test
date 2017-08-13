@@ -55,5 +55,5 @@ Data types:
         - Units, this is a short alphanumeric string
         - Precision, is the step factor between min and max so it can not be
         more than the difference between them (required)
-        - Accuracy, an small number
+        - Accuracy, the same as precision
 - Object: format and default value is disabled
