@@ -148,6 +148,7 @@ class Attributes extends Component {
 
     const { list: attributes } = this.props.attributes;
     const categoryAttributes = attributes.filter(el => el.params.categoryId === categoryId);
+    const names = attributes.map(el => ({ _id: el._id, name: el.params.name }));
 
     if (!categoryAttributes.length) {
       return <p>There are no attributes for this category.</p>;
@@ -156,7 +157,8 @@ class Attributes extends Component {
     return categoryAttributes.map(el => (
       <AttributeForm
         key={el._id}
-        {...el}
+        attribute={el}
+        names={names}
         onChange={this.onChange}
         onRemove={this.onRemove}
       />

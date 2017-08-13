@@ -6,8 +6,9 @@
     - [ ] Render structure and design
     - [ ] Update
     - [ ] Validation
-    - [ ] Toggle (show/hide) manually
+    - [ ] Name duplicity validation
     - [ ] Delete option
+    - [ ] Toggle (show/hide) manually
 - [x] Save button
 - [x] JSON Live Preview
 
@@ -15,12 +16,12 @@
 
 - [x] No dashboard
 - [x] No cancel button
-- [ ] Decouple form as a component
-- [ ] Validate fields on input keyboard event
+- [x] Decouple form as a component
+- [x] Validate fields on input keyboard event
 - [x] Attributes properties more descriptive
 - [x] Constants names more descriptive
 - [x] Setup more lightweight
 - [x] Redux actions constants decoupled
 - [x] Use React always instead of jQuery
 - [x] Live JSON representation
-- [ ] Responsive (plus)
+- [x] Responsive (plus)

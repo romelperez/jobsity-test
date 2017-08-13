@@ -12,22 +12,55 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Paper from 'material-ui/Paper';
 import { ATTRIBUTES_TYPES, ATTRIBUTES_STRING_FORMATS } from 'client/consts';
+import vulcanval from 'vulcanval';
 
 const fieldStyle = { width: '100%' };
 const textFieldInputStyle = {};
+const vv = vulcanval({
+  fields: [{
+    name: 'name',
+    required: true,
+    validators: {
+      isAlphanumeric: true,
+      isLength: { min: 1, max: 64 },
+    },
+  }, {
+    name: 'description',
+    required: true,
+    validators: {
+      isLength: { min: 2, max: 64 },
+    },
+  }, {
+    name: 'defaultValue',
+    validators: {
+      isLength: { max: 64 },
+    },
+  }, {
+    name: 'type',
+    required: true,
+  }, {
+    name: 'format',
+  }]
+});
 
 export default class AttributeForm extends Component {
 
   constructor () {
     super(...arguments);
+
+    this.state = {
+      hasChanged: false,
+      isToggled: false,
+      errors: {},
+    };
   }
 
   render () {
 
-    const { _id, isValid, params, onChange, onRemove, className, ...etc } = this.props;
+    const { attribute, names, onChange, onRemove, className, ...etc } = this.props;
     const cls = cx('attribute-form', className);
-
-    const errorName = '';
+    const { _id, isValid, params } = attribute;
+    const { errors } = this.state;
 
     return (
       <form className={cls} ref={el => (this.container = el)} data-id={_id} {...etc}>
@@ -44,12 +77,10 @@ export default class AttributeForm extends Component {
                   name='name'
                   floatingLabelText='Name'
                   hintText='Enter a name'
+                  errorText={errors.name}
                   value={params.name}
                   onChange={ev => this.onChange('name', ev.target.value)}
-                  data-vv-display={`#f${_id}-name-display`}
                 />
-                <div id={`f${_id}-name-display`} />
-                { !!errorName && <div className='vv-display vv-display_error'>{errorName}</div> }
               </Row>
             </Col>
 
@@ -63,11 +94,10 @@ export default class AttributeForm extends Component {
                   name='description'
                   floatingLabelText='Description'
                   hintText='Enter a description for your new attribute'
+                  errorText={errors.description}
                   value={params.description}
                   onChange={ev => this.onChange('description', ev.target.value)}
-                  data-vv-display={`#f${_id}-description-display`}
                 />
-                <div id={`f${_id}-description-display`} />
               </Row>
             </Col>
 
@@ -88,7 +118,7 @@ export default class AttributeForm extends Component {
               </Row>
             </Col>
 
-            {/* DEFAULT TO */}
+            {/* DEFAULT VALUE */}
             <Col s={12} m={8}>
               <Row>
                 <TextField
@@ -99,11 +129,10 @@ export default class AttributeForm extends Component {
                   floatingLabelText='Default value'
                   hintText='Enter a default value'
                   disabled={this.isDefaultToDisabled()}
+                  errorText={errors.defaultValue}
                   value={params.defaultValue}
                   onChange={ev => this.onChange('defaultValue', ev.target.value)}
-                  data-vv-display={`#f${_id}-defaultValue-display`}
                 />
-                <div id={`f${_id}-defaultValue-display`} />
               </Row>
             </Col>
 
@@ -118,14 +147,13 @@ export default class AttributeForm extends Component {
                   name='type'
                   floatingLabelText='Data Type'
                   hintText='Select the data type'
+                  errorText={errors.type}
                   value={params.type}
                   onChange={(ev, ind, value) => this.onChange('type', value)}
-                  data-vv-display={`#f${_id}-type-display`}
                 >
                   <MenuItem value={ATTRIBUTES_TYPES.STRING} primaryText='String' />
                   <MenuItem value={ATTRIBUTES_TYPES.OBJECT} primaryText='Object' />
                 </SelectField>
-                <div id={`f${_id}-type-display`} />
               </Row>
             </Col>
 
@@ -138,13 +166,12 @@ export default class AttributeForm extends Component {
                   floatingLabelText='Format'
                   hintText='Select the format'
                   disabled={this.isFormatDisabled()}
+                  errorText={errors.format}
                   value={params.format}
                   onChange={(ev, ind, value) => this.onChange('format', value)}
-                  data-vv-display={`#f${_id}-format-display`}
                 >
                   {this.getFormats()}
                 </SelectField>
-                <div id={`f${_id}-format-display`} />
               </Row>
             </Col>
 
@@ -155,7 +182,7 @@ export default class AttributeForm extends Component {
   }
 
   getFormats () {
-    const { params } = this.props;
+    const { params } = this.props.attribute;
     if (params.type === ATTRIBUTES_TYPES.STRING) {
       const formats = ATTRIBUTES_STRING_FORMATS;
       return [
@@ -179,25 +206,32 @@ export default class AttributeForm extends Component {
    */
   onChange = (name, value) => {
 
-    const { _id, params, names } = this.props;
+    const { attribute, names } = this.props;
 
-    // TODO:
-    // Validate field's name duplicity.
-    /*const fieldName = name === 'name' ? value : params.name;
+    // Validate attributes's name duplicity.
+    const attributeName = name === 'name' ? value : attribute.params.name;
     const duplicatedName = !!names.
-      filter(el => el._id !== _id).
-      find(el => el.name === fieldName);*/
-    const duplicatedName = false;
+      filter(el => el._id !== attribute._id).
+      find(el => el.name === attributeName);
 
-    // Field is valid if does not have name duplicity or all the fields are valid.
-    const isValid = false; //!duplicatedName && !$(this.container).vulcanval('inspect');
+    const params = {
+      ...attribute.params,
+      [name]: value
+    };
+
+    let errors = vv.validate(params);
+    const isValid = !duplicatedName && !errors;
+
+    // If the name is duplicated, set it as a property name error.
+    if (duplicatedName) {
+      errors = errors || {};
+      errors.name = "Attribute's name must be unique.";
+    }
+
     const toUpdate = {
-      _id,
+      _id: attribute._id,
       isValid,
-      params: {
-        ...params,
-        [name]: value,
-      }
+      params
     };
 
     // If user changes the type to object.
@@ -206,46 +240,45 @@ export default class AttributeForm extends Component {
       toUpdate.params.format = '';
     }
 
-    /*this.setState({
-      errorName: duplicatedName ? "Field's name is duplicated." : ''
-    });*/
+    this.setState({ errors: errors || {} });
 
     this.props.onChange(toUpdate);
   }
 
   isDefaultToDisabled () {
-    const { params } = this.props;
+    const { params } = this.props.attribute;
     return params.type !== ATTRIBUTES_TYPES.STRING;
   }
 
   isFormatDisabled () {
-    const { params } = this.props;
+    const { params } = this.props.attribute;
     return params.type !== ATTRIBUTES_TYPES.STRING;
   }
 }
 
 AttributeForm.propTypes = {
-  _id: PropTypes.string.isRequired,
-  isValid: PropTypes.bool,
-  params: PropTypes.shape({
-    name: PropTypes.string,
-    description: PropTypes.string,
-    defaultValue: PropTypes.string,
-    type: PropTypes.string,
-    format: PropTypes.string,
-    enum: PropTypes.arrayOf(PropTypes.string),
-    rangeMin: PropTypes.string,
-    rangeMax: PropTypes.string,
-    unitsOfMeasurement: PropTypes.string,
-    precision: PropTypes.string,
-    accuracy: PropTypes.string,
+  attribute: PropTypes.shape({
+    _id: PropTypes.string,
+    isValid: PropTypes.bool,
+    params: PropTypes.shape({
+      name: PropTypes.string,
+      description: PropTypes.string,
+      defaultValue: PropTypes.string,
+      type: PropTypes.string,
+      format: PropTypes.string,
+      enum: PropTypes.arrayOf(PropTypes.string),
+      rangeMin: PropTypes.string,
+      rangeMax: PropTypes.string,
+      unitsOfMeasurement: PropTypes.string,
+      precision: PropTypes.string,
+      accuracy: PropTypes.string,
+    }),
   }).isRequired,
   onChange: PropTypes.func,
   onRemove: PropTypes.func,
 };
 
 AttributeForm.defaultProps = {
-  isValid: false,
   onChange () {},
   onRemove () {},
 };
