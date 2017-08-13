@@ -7,7 +7,7 @@ import { ATTRIBUTES_TYPES, ATTRIBUTES_STRING_FORMATS } from 'client/consts';
 import AttributeForm from './';
 
 const mountEl = function (ext) {
-  const props = extend(true, {
+  const attribute = extend(true, {
     _id: 'u1',
     isValid: false,
     params: {
@@ -16,11 +16,12 @@ const mountEl = function (ext) {
       defaultValue: 'custom-default-to',
       type: ATTRIBUTES_TYPES.STRING,
       format: ATTRIBUTES_STRING_FORMATS.NONE,
+      enum: [],
     }
   }, ext);
   return mount(
     <MuiThemeProvider>
-      <AttributeForm {...props} />
+      <AttributeForm attribute={attribute} />
     </MuiThemeProvider>
   );
 };
@@ -57,7 +58,7 @@ describe('Components', function () {
 
     it('Has select type', function () {
       const el = mountEl();
-      const actual = el.find('form select[name="type"]');
+      const actual = el.find('form [name="type"]');
       expect(actual).to.have.lengthOf(1);
 
       const value = actual.prop('value');
@@ -77,13 +78,13 @@ describe('Components', function () {
         params: { type: ATTRIBUTES_TYPES.OBJECT }
       });
 
-      const type = el.find('form select[name="type"]');
+      const type = el.find('form [name="type"]');
       expect(type.prop('value')).to.equal(ATTRIBUTES_TYPES.OBJECT);
 
       const defaultValue = el.find('form input[name="defaultValue"]');
       expect(defaultValue.prop('disabled'), 'defaultValue disabled').to.be.true;
 
-      const format = el.find('form select[name="format"]');
+      const format = el.find('form [name="format"]');
       expect(format.prop('disabled', 'format disabled')).to.be.true;
     });
 
@@ -97,7 +98,7 @@ describe('Components', function () {
         onChange: spy,
       });
 
-      const type = el.find('form select[name="type"]');
+      const type = el.find('form [name="type"]');
       expect(type.prop('value')).to.equal(ATTRIBUTES_TYPES.STRING);
 
       type.simulate('change', { target: { name: 'type', value: ATTRIBUTES_TYPES.OBJECT } });
@@ -119,7 +120,7 @@ describe('Components', function () {
 
     it('Has select format', function () {
       const el = mountEl();
-      const actual = el.find('form select[name="format"]');
+      const actual = el.find('form [name="format"]');
       expect(actual).to.have.lengthOf(1);
 
       const value = actual.prop('value');
