@@ -4,9 +4,9 @@
 - [x] Tabs
 - [ ] Attribute
     - [ ] Render structure and design
-    - [ ] Update
+    - [x] Update
     - [ ] Validation
-    - [ ] Name duplicity validation
+    - [x] Name duplicity validation
     - [ ] Delete option
     - [ ] Toggle (show/hide) manually
 - [x] Save button

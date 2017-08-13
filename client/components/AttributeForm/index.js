@@ -10,12 +10,16 @@ import Col from 'react-materialize/lib/Col';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import RaisedButton from 'material-ui/RaisedButton';
+import Chip from 'material-ui/Chip';
 import Paper from 'material-ui/Paper';
-import { ATTRIBUTES_TYPES, ATTRIBUTES_STRING_FORMATS } from 'client/consts';
 import vulcanval from 'vulcanval';
+import { ATTRIBUTES_TYPES, ATTRIBUTES_STRING_FORMATS } from 'client/consts';
 
 const fieldStyle = { width: '100%' };
 const textFieldInputStyle = {};
+
+// Validator for the form.
 const vv = vulcanval({
   fields: [{
     name: 'name',
@@ -43,15 +47,33 @@ const vv = vulcanval({
   }]
 });
 
+// Validator for the enumeration field.
+const vvEnum = vulcanval({
+  fields: [{
+    name: 'enumeration',
+    required: true,
+    validators: {
+      isAlphanumeric: true,
+      isLength: { min: 1, max: 64 },
+    },
+  }]
+});
+
 export default class AttributeForm extends Component {
 
   constructor () {
     super(...arguments);
 
     this.state = {
-      hasChanged: false,
+
+      // If the form is toggled.
       isToggled: false,
+
+      // The list of form errors.
       errors: {},
+
+      // The current value to add in the enumeration list.
+      enumeration: '',
     };
   }
 
@@ -128,7 +150,7 @@ export default class AttributeForm extends Component {
                   name='defaultValue'
                   floatingLabelText='Default value'
                   hintText='Enter a default value'
-                  disabled={this.isDefaultToDisabled()}
+                  disabled={this.isDefaultValueDisabled()}
                   errorText={errors.defaultValue}
                   value={params.defaultValue}
                   onChange={ev => this.onChange('defaultValue', ev.target.value)}
@@ -170,18 +192,27 @@ export default class AttributeForm extends Component {
                   value={params.format}
                   onChange={(ev, ind, value) => this.onChange('format', value)}
                 >
-                  {this.getFormats()}
+                  {this.createFormats()}
                 </SelectField>
               </Row>
             </Col>
 
           </Row>
+
+          {this.createTypeStringNone()}
+
+          {this.createTypeStringNumber()}
+
         </Paper>
       </form>
     );
   }
 
-  getFormats () {
+  /**
+   * Create the formats select options.
+   * @return {React}
+   */
+  createFormats () {
     const { params } = this.props.attribute;
     if (params.type === ATTRIBUTES_TYPES.STRING) {
       const formats = ATTRIBUTES_STRING_FORMATS;
@@ -200,6 +231,97 @@ export default class AttributeForm extends Component {
   }
 
   /**
+   * Create the elements when the type is STRING and the format is NONE.
+   * @return {React}
+   */
+  createTypeStringNone () {
+
+    const { params } = this.props.attribute;
+
+    if (params.type === ATTRIBUTES_TYPES.STRING && params.format === ATTRIBUTES_STRING_FORMATS.NONE) {
+
+      const { enumeration } = this.state;
+
+      // Validate the key.
+      let { enumeration: enumError } = vvEnum.validate({ enumeration }) || {};
+
+      // The key must not be duplicated.
+      const isDuplicated = params.enum.find(el => el === enumeration);
+      if (isDuplicated) {
+        enumError = 'Enumeration key is duplicated.';
+      }
+
+      return (
+        <Row>
+          <Col s={12} m={4}>
+            <TextField
+              style={{ width: 'calc(100% - 100px)', marginRight: '5px' }}
+              inputStyle={textFieldInputStyle}
+              type='text'
+              name='enum'
+              floatingLabelText='Enumerations'
+              hintText='Enter value'
+              errorText={enumeration ? enumError : ''}
+              value={enumeration}
+              onChange={ev => this.setState({ enumeration: ev.target.value })}
+            />
+            <RaisedButton
+              style={{ verticalAlign: 'top', marginTop: '30px' }}
+              label='Add'
+              disabled={!!enumError}
+              onClick={this.onEnumAdd}
+            />
+          </Col>
+          <Col s={12} m={8}>
+            {params.enum.map(el => (
+              <span key={el} style={{ display: 'inline-block' }}>
+                <Chip onRequestDelete={() => this.onEnumRemove(el)}>{el}</Chip>
+              </span>
+            ))}
+          </Col>
+        </Row>
+      );
+    }
+  }
+
+  /**
+   * Create the elements when the type is STRING and the format is NUMBER.
+   * @return {React}
+   */
+  createTypeStringNumber () {
+    //
+  }
+
+  /**
+   * On add enumeration. This happens when the user has already set an enumeration
+   * to create but is not yet added.
+   */
+  onEnumAdd = () => {
+
+    const { params } = this.props.attribute;
+    const { enumeration } = this.state;
+
+    if (!enumeration) return;
+
+    this.setState({ enumeration: '' });
+
+    const enumValue = [ ...params.enum, enumeration ];
+    this.onChange('enum', enumValue);
+  }
+
+  /**
+   * On remove enumeration from the list when it was already added.
+   * @param  {String} key
+   */
+  onEnumRemove = (key) => {
+
+    const { params } = this.props.attribute;
+    const enumValue = params.enum.filter(el => el !== key);
+
+    this.onChange('enum', enumValue);
+  }
+
+  /**
    * On field property update.
    * @param  {String} name
    * @param  {*} value
@@ -214,10 +336,10 @@ export default class AttributeForm extends Component {
       filter(el => el._id !== attribute._id).
       find(el => el.name === attributeName);
 
-    const params = {
+    const params = this.normalize({
       ...attribute.params,
       [name]: value
-    };
+    });
 
     let errors = vv.validate(params);
     const isValid = !duplicatedName && !errors;
@@ -228,24 +350,14 @@ export default class AttributeForm extends Component {
       errors.name = "Attribute's name must be unique.";
     }
 
-    const toUpdate = {
-      _id: attribute._id,
-      isValid,
-      params
-    };
-
-    // If user changes the type to object.
-    if (name === 'type' && value === ATTRIBUTES_TYPES.OBJECT) {
-      toUpdate.params.defaultTo = '';
-      toUpdate.params.format = '';
-    }
+    const toUpdate = { _id: attribute._id, isValid, params };
 
     this.setState({ errors: errors || {} });
 
     this.props.onChange(toUpdate);
   }
 
-  isDefaultToDisabled () {
+  isDefaultValueDisabled () {
     const { params } = this.props.attribute;
     return params.type !== ATTRIBUTES_TYPES.STRING;
   }
@@ -253,6 +365,30 @@ export default class AttributeForm extends Component {
   isFormatDisabled () {
     const { params } = this.props.attribute;
     return params.type !== ATTRIBUTES_TYPES.STRING;
+  }
+
+  /**
+   * Normalize a params object to update.
+   * We set only the allowed properties with values in each case.
+   * @param  {Object} params
+   * @return {Object} - Mutated normalized version of received params.
+   */
+  normalize (params) {
+
+    // If user changes and the type is different from STRING and the format is
+    // different from NONE.
+    if (params.type !== ATTRIBUTES_TYPES.STRING
+    || params.format !== ATTRIBUTES_STRING_FORMATS.NONE) {
+      params.enum = [];
+    }
+
+    // If user changes the type to object.
+    if (params.type === ATTRIBUTES_TYPES.OBJECT) {
+      params.defaultValue = '';
+      params.format = '';
+    }
+
+    return params;
   }
 }
 
