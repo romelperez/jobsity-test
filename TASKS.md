@@ -9,8 +9,7 @@
     - [x] Name duplicity validation
     - [x] Delete option
     - [x] Toggle (show/hide) manually
-    - [ ] Validate defaultValue based on params
-    - [ ] Value format as NONE is not rendering properly in selector
+    - [x] Value format as NONE is not rendering properly in selector
 - [x] Save button
 - [x] JSON Live Preview
 
