@@ -4,7 +4,7 @@ export const ATTRIBUTES_TYPES = {
 };
 
 export const ATTRIBUTES_STRING_FORMATS = {
-  NONE: '',
+  NONE: 'NONE',
   NUMBER: 'NUMBER',
   BOOLEAN: 'BOOLEAN',
   DATETIME: 'DATETIME',

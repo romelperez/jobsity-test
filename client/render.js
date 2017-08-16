@@ -6,7 +6,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Attributes from './containers/Attributes';
 import store from './store';
 
-const render = function () {
+export default function render () {
   const app = (
     <Provider store={store}>
       <MuiThemeProvider>
@@ -15,8 +15,5 @@ const render = function () {
     </Provider>
   );
   const root = document.querySelector('#app');
-  if (!root) return console.log('No container found.');
   ReactDOM.render(app, root);
-};
-
-export default render;
+}

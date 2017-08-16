@@ -14,11 +14,12 @@ import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import Chip from 'material-ui/Chip';
 import Paper from 'material-ui/Paper';
+
 import { ATTRIBUTES_TYPES, ATTRIBUTES_STRING_FORMATS } from 'client/consts';
-import { vv, vvEnum } from './validation';
+import normalize from 'client/tools/normalize';
+import { validator, validatorEnum } from './validators';
 
 const fieldStyle = { width: '100%' };
-const textFieldInputStyle = {};
 
 export default class AttributeForm extends Component {
 
@@ -41,7 +42,7 @@ export default class AttributeForm extends Component {
   render () {
 
     const { attribute, names, onChange, onRemove, className, ...etc } = this.props;
-    const { _id, isValid, params } = attribute;
+    const { _id, params } = attribute;
     const { isToggled, errors } = this.state;
     const cls = cx('attribute-form', {
       'attribute-form--only-main-fields': isToggled
@@ -78,7 +79,6 @@ export default class AttributeForm extends Component {
               <Row>
                 <TextField
                   style={fieldStyle}
-                  inputStyle={textFieldInputStyle}
                   type='text'
                   name='name'
                   floatingLabelText='Name'
@@ -95,7 +95,6 @@ export default class AttributeForm extends Component {
               <Row>
                 <TextField
                   style={fieldStyle}
-                  inputStyle={textFieldInputStyle}
                   type='text'
                   name='description'
                   floatingLabelText='Description'
@@ -115,7 +114,6 @@ export default class AttributeForm extends Component {
               <Row>
                 <TextField
                   style={fieldStyle}
-                  inputStyle={textFieldInputStyle}
                   type='select'
                   floatingLabelText='Device Resource Type'
                   hintText='Default value'
@@ -129,7 +127,6 @@ export default class AttributeForm extends Component {
               <Row>
                 <TextField
                   style={fieldStyle}
-                  inputStyle={textFieldInputStyle}
                   type='text'
                   name='defaultValue'
                   floatingLabelText='Default value'
@@ -189,7 +186,6 @@ export default class AttributeForm extends Component {
                 <Row>
                   <TextField
                     style={fieldStyle}
-                    inputStyle={textFieldInputStyle}
                     type='number'
                     name='rangeMin'
                     floatingLabelText='Range min'
@@ -206,7 +202,6 @@ export default class AttributeForm extends Component {
                 <Row>
                   <TextField
                     style={fieldStyle}
-                    inputStyle={textFieldInputStyle}
                     type='number'
                     name='rangeMax'
                     floatingLabelText='Range max'
@@ -228,7 +223,6 @@ export default class AttributeForm extends Component {
                 <Row>
                   <TextField
                     style={fieldStyle}
-                    inputStyle={textFieldInputStyle}
                     type='text'
                     name='unitsOfMeasurement'
                     floatingLabelText='Units of Measurement'
@@ -245,7 +239,6 @@ export default class AttributeForm extends Component {
                 <Row>
                   <TextField
                     style={fieldStyle}
-                    inputStyle={textFieldInputStyle}
                     type='number'
                     name='precision'
                     floatingLabelText='Precision'
@@ -262,7 +255,6 @@ export default class AttributeForm extends Component {
                 <Row>
                   <TextField
                     style={fieldStyle}
-                    inputStyle={textFieldInputStyle}
                     type='number'
                     name='accuracy'
                     floatingLabelText='Accuracy'
@@ -320,7 +312,7 @@ export default class AttributeForm extends Component {
     const { enumeration } = this.state;
 
     // Validate the key.
-    let { enumeration: enumError } = vvEnum.validate({ enumeration }) || {};
+    let { enumeration: enumError } = validatorEnum.validate({ enumeration }) || {};
 
     // The key must not be duplicated.
     const isDuplicated = params.enum.find(el => el === enumeration);
@@ -333,7 +325,6 @@ export default class AttributeForm extends Component {
         <Col s={12} m={6}>
           <TextField
             style={{ width: 'calc(100% - 100px)', marginRight: '5px' }}
-            inputStyle={textFieldInputStyle}
             type='text'
             name='enum'
             floatingLabelText='Enumerations'
@@ -404,12 +395,12 @@ export default class AttributeForm extends Component {
       filter(el => el._id !== attribute._id).
       find(el => el.name === attributeName);
 
-    const params = this.normalize({
+    const params = normalize({
       ...attribute.params,
       [name]: value
     });
 
-    let errors = vv.validate(params);
+    let errors = validator.validate(params);
     const isValid = !duplicatedName && !errors;
     const isToggled = !isValid ? false : this.state.isToggled;
 
@@ -440,41 +431,6 @@ export default class AttributeForm extends Component {
     const { params } = this.props.attribute;
     return params.type === ATTRIBUTES_TYPES.STRING
     && params.format === ATTRIBUTES_STRING_FORMATS.NUMBER;
-  }
-
-  /**
-   * Normalize a params object to update.
-   * We set only the allowed properties with values in each case.
-   * @param  {Object} params
-   * @return {Object} - Mutated normalized version of received params.
-   */
-  normalize (params) {
-
-    // If user changes and the type is different from STRING and the format is
-    // different from NONE.
-    if (params.type !== ATTRIBUTES_TYPES.STRING
-    || params.format !== ATTRIBUTES_STRING_FORMATS.NONE) {
-      params.enum = [];
-    }
-
-    // If user changes and the type is different from STRING and the format is
-    // different from NUMBER.
-    if (params.type !== ATTRIBUTES_TYPES.STRING
-    || params.format !== ATTRIBUTES_STRING_FORMATS.NUMBER) {
-      params.unitsOfMeasurement = '';
-      params.rangeMin = '';
-      params.rangeMax = '';
-      params.precision = '';
-      params.accuracy = '';
-    }
-
-    // If user changes the type to object.
-    if (params.type === ATTRIBUTES_TYPES.OBJECT) {
-      params.defaultValue = '';
-      params.format = '';
-    }
-
-    return params;
   }
 }
 

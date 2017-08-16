@@ -2,7 +2,7 @@ import vulcanval from 'vulcanval';
 import { ATTRIBUTES_TYPES, ATTRIBUTES_STRING_FORMATS } from 'client/consts';
 
 // Validator for the form.
-export const vv = vulcanval({
+export const validator = vulcanval({
   fieldsets: [{
     name: 'stringNumber',
     fields: ['rangeMin', 'rangeMax', 'unitsOfMeasurement', 'precision', 'accuracy'],
@@ -66,7 +66,7 @@ export const vv = vulcanval({
 });
 
 // Validator for the enumeration field.
-export const vvEnum = vulcanval({
+export const validatorEnum = vulcanval({
   fields: [{
     name: 'enumeration',
     required: true,

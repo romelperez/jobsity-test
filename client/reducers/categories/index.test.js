@@ -1,4 +1,4 @@
-import { CATEGORIES_SAVE } from 'client/actions/categories';
+import { CATEGORIES_SAVE } from 'client/actions/types';
 import reducer from './';
 
 describe('Reducers', function () {

@@ -2,7 +2,7 @@ import {
   ATTRIBUTES_ADD,
   ATTRIBUTES_SAVE,
   ATTRIBUTES_REMOVE
-} from 'client/actions/attributes';
+} from 'client/actions/types';
 import {
   ATTRIBUTES_TYPES,
   ATTRIBUTES_STRING_FORMATS

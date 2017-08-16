@@ -5,7 +5,7 @@ import {
   ATTRIBUTES_ADD,
   ATTRIBUTES_SAVE,
   ATTRIBUTES_REMOVE
-} from 'client/actions/attributes';
+} from 'client/actions/types';
 import {
   ATTRIBUTES_TYPES,
   ATTRIBUTES_STRING_FORMATS
@@ -16,6 +16,9 @@ const initial = {
 };
 
 export default function reducer (state = initial, { type, payload } = {}) {
+
+  let attribute;
+
   switch (type) {
 
     case ATTRIBUTES_ADD: {
@@ -24,7 +27,7 @@ export default function reducer (state = initial, { type, payload } = {}) {
         throw new Error('A categoryId is required.');
       }
 
-      const attribute = {
+      attribute = {
         _id: uuid.v4(),
         isValid: false,
         params: {
@@ -49,7 +52,7 @@ export default function reducer (state = initial, { type, payload } = {}) {
 
     case ATTRIBUTES_SAVE: {
 
-      const attribute = { params: {}, ...payload };
+      attribute = { params: {}, ...payload };
 
       const list = mergeCollection(
         state.list,

@@ -1,5 +1,5 @@
 import mergeCollection from 'prhone-tools/merge-collections';
-import { CATEGORIES_SAVE } from 'client/actions/categories';
+import { CATEGORIES_SAVE } from 'client/actions/types';
 
 const initial = {
   list: [],

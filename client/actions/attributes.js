@@ -1,6 +1,8 @@
-export const ATTRIBUTES_ADD = 'ATTRIBUTES_ADD';
-export const ATTRIBUTES_SAVE = 'ATTRIBUTES_SAVE';
-export const ATTRIBUTES_REMOVE = 'ATTRIBUTES_REMOVE';
+import {
+  ATTRIBUTES_ADD,
+  ATTRIBUTES_SAVE,
+  ATTRIBUTES_REMOVE
+} from './types';
 
 export const add = (props) => {
   return {

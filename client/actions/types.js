@@ -1,0 +1,7 @@
+// Categories
+export const CATEGORIES_SAVE = 'CATEGORIES_SAVE';
+
+// Attributes
+export const ATTRIBUTES_ADD = 'ATTRIBUTES_ADD';
+export const ATTRIBUTES_SAVE = 'ATTRIBUTES_SAVE';
+export const ATTRIBUTES_REMOVE = 'ATTRIBUTES_REMOVE';

@@ -1,4 +1,4 @@
-export const CATEGORIES_SAVE = 'CATEGORIES_SAVE';
+import { CATEGORIES_SAVE } from './types';
 
 export const save = (list) => {
   return {
