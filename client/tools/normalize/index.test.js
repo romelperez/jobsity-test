@@ -69,6 +69,19 @@ describe('Normalize', function () {
     expect(actual).to.contain(expected);
   });
 
+  it('When type STRING and no format is set, set NONE', function () {
+    const params = {
+      type: ATTRIBUTES_TYPES.STRING,
+      format: '',
+    };
+    const actual = normalize(params);
+    const expected = {
+      type: ATTRIBUTES_TYPES.STRING,
+      format: ATTRIBUTES_STRING_FORMATS.NONE,
+    };
+    expect(actual).to.contain(expected);
+  });
+
   it('When no type OBJECT, default and format should be maintained', function () {
     const params = {
       type: ATTRIBUTES_TYPES.STRING,

@@ -26,6 +26,11 @@ export default function normalize (params) {
     params.accuracy = '';
   }
 
+  // If type is STRING but no format is set.
+  if (params.type === ATTRIBUTES_TYPES.STRING && !params.format) {
+    params.format = ATTRIBUTES_STRING_FORMATS.NONE;
+  }
+
   // If user changes the type to object.
   if (params.type === ATTRIBUTES_TYPES.OBJECT) {
     params.defaultValue = '';

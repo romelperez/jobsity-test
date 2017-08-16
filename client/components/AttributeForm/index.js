@@ -1,5 +1,3 @@
-/* eslint no-unused-vars: [0] */
-
 import './_index.scss';
 
 import React, { Component } from 'react';
@@ -12,12 +10,13 @@ import SelectField from 'material-ui/SelectField';
 import Toggle from 'material-ui/Toggle';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
-import Chip from 'material-ui/Chip';
 import Paper from 'material-ui/Paper';
 
 import { ATTRIBUTES_TYPES, ATTRIBUTES_STRING_FORMATS } from 'client/consts';
 import normalize from 'client/tools/normalize';
-import { validator, validatorEnum } from './validators';
+import AttributeEnumeration from 'client/components/AttributeEnumeration';
+import getFormats from './get-formats';
+import validator from './validator';
 
 const fieldStyle = { width: '100%' };
 
@@ -31,11 +30,8 @@ export default class AttributeForm extends Component {
       // If the form is toggled.
       isToggled: false,
 
-      // The list of form errors.
+      // The list of form errors. When empty object, no attribute errors.
       errors: {},
-
-      // The current value to add in the enumeration list.
-      enumeration: '',
     };
   }
 
@@ -72,7 +68,7 @@ export default class AttributeForm extends Component {
             />
           </div>
 
-          <Row className='attribute-form__main-fields'>
+          <Row className='attribute-form__fields attribute-form__main-fields'>
 
             {/* NAME */}
             <Col s={12} m={4}>
@@ -107,7 +103,7 @@ export default class AttributeForm extends Component {
             </Col>
 
           </Row>
-          <Row>
+          <Row className='attribute-form__fields'>
 
             {/* DEVICE */}
             <Col s={12} m={4}>
@@ -140,7 +136,7 @@ export default class AttributeForm extends Component {
             </Col>
 
           </Row>
-          <Row>
+          <Row className='attribute-form__fields'>
 
             {/* DATA TYPE */}
             <Col s={12} m={4}>
@@ -171,103 +167,14 @@ export default class AttributeForm extends Component {
                   value={params.format}
                   onChange={(ev, ind, value) => this.onChange('format', value)}
                 >
-                  {this.createFormats()}
+                  {getFormats(params.type)}
                 </SelectField>
               </Row>
             </Col>
 
           </Row>
 
-          { this.isTypeStringNumber() && (
-            <Row>
-
-              {/* RANGE MIN */}
-              <Col s={12} m={6}>
-                <Row>
-                  <TextField
-                    style={fieldStyle}
-                    type='number'
-                    name='rangeMin'
-                    floatingLabelText='Range min'
-                    hintText='Range minimum'
-                    errorText={errors.rangeMin}
-                    value={params.rangeMin}
-                    onChange={ev => this.onChange('rangeMin', ev.target.value)}
-                  />
-                </Row>
-              </Col>
-
-              {/* RANGE MAX */}
-              <Col s={12} m={6}>
-                <Row>
-                  <TextField
-                    style={fieldStyle}
-                    type='number'
-                    name='rangeMax'
-                    floatingLabelText='Range max'
-                    hintText='Range maximum'
-                    errorText={errors.rangeMax}
-                    value={params.rangeMax}
-                    onChange={ev => this.onChange('rangeMax', ev.target.value)}
-                  />
-                </Row>
-              </Col>
-
-            </Row>
-          ) }
-          { this.isTypeStringNumber() && (
-            <Row>
-
-              {/* UNITS OF MEASUREMENT */}
-              <Col s={12} m={4}>
-                <Row>
-                  <TextField
-                    style={fieldStyle}
-                    type='text'
-                    name='unitsOfMeasurement'
-                    floatingLabelText='Units of Measurement'
-                    hintText='UoM (eg. mm)'
-                    errorText={errors.unitsOfMeasurement}
-                    value={params.unitsOfMeasurement}
-                    onChange={ev => this.onChange('unitsOfMeasurement', ev.target.value)}
-                  />
-                </Row>
-              </Col>
-
-              {/* PRECISION */}
-              <Col s={12} m={4}>
-                <Row>
-                  <TextField
-                    style={fieldStyle}
-                    type='number'
-                    name='precision'
-                    floatingLabelText='Precision'
-                    hintText='Precision (eg. 0.5)'
-                    errorText={errors.precision}
-                    value={params.precision}
-                    onChange={ev => this.onChange('precision', ev.target.value)}
-                  />
-                </Row>
-              </Col>
-
-              {/* ACCURACY */}
-              <Col s={12} m={4}>
-                <Row>
-                  <TextField
-                    style={fieldStyle}
-                    type='number'
-                    name='accuracy'
-                    floatingLabelText='Accuracy'
-                    hintText='Accuracy (eg. 0.5)'
-                    errorText={errors.accuracy}
-                    value={params.accuracy}
-                    onChange={ev => this.onChange('accuracy', ev.target.value)}
-                  />
-                </Row>
-              </Col>
-
-            </Row>
-          ) }
+          {this.createTypeStringNumber()}
 
           {this.createTypeStringNone()}
 
@@ -277,24 +184,108 @@ export default class AttributeForm extends Component {
   }
 
   /**
-   * Create the formats select options.
+   * Create the elements when the type is STRING and the format is NUMBER.
    * @return {React}
    */
-  createFormats () {
+  createTypeStringNumber () {
+
     const { params } = this.props.attribute;
-    if (params.type === ATTRIBUTES_TYPES.STRING) {
-      const formats = ATTRIBUTES_STRING_FORMATS;
-      return [
-        <MenuItem key={formats.NONE} value={formats.NONE} primaryText='None' />,
-        <MenuItem key={formats.NUMBER} value={formats.NUMBER} primaryText='Number' />,
-        <MenuItem key={formats.BOOLEAN} value={formats.BOOLEAN} primaryText='Boolean' />,
-        <MenuItem key={formats.DATETIME} value={formats.DATETIME} primaryText='DateTime' />,
-        <MenuItem key={formats.CDATA} value={formats.CDATA} primaryText='CDATA' />,
-        <MenuItem key={formats.URI} value={formats.URI} primaryText='URI' />
-      ];
+    const { errors } = this.state;
+
+    if (params.type !== ATTRIBUTES_TYPES.STRING
+    || params.format !== ATTRIBUTES_STRING_FORMATS.NUMBER) {
+      return;
     }
+
     return (
-      <MenuItem value='' primaryText='None' />
+      <div>
+        <Row className='attribute-form__fields'>
+
+          {/* RANGE MIN */}
+          <Col s={12} m={6}>
+            <Row>
+              <TextField
+                style={fieldStyle}
+                type='number'
+                name='rangeMin'
+                floatingLabelText='Range min'
+                hintText='Range minimum'
+                errorText={errors.rangeMin}
+                value={params.rangeMin}
+                onChange={ev => this.onChange('rangeMin', ev.target.value)}
+              />
+            </Row>
+          </Col>
+
+          {/* RANGE MAX */}
+          <Col s={12} m={6}>
+            <Row>
+              <TextField
+                style={fieldStyle}
+                type='number'
+                name='rangeMax'
+                floatingLabelText='Range max'
+                hintText='Range maximum'
+                errorText={errors.rangeMax}
+                value={params.rangeMax}
+                onChange={ev => this.onChange('rangeMax', ev.target.value)}
+              />
+            </Row>
+          </Col>
+
+        </Row>
+        <Row className='attribute-form__fields'>
+
+          {/* UNITS OF MEASUREMENT */}
+          <Col s={12} m={4}>
+            <Row>
+              <TextField
+                style={fieldStyle}
+                type='text'
+                name='unitsOfMeasurement'
+                floatingLabelText='Units of Measurement'
+                hintText='UoM (eg. mm)'
+                errorText={errors.unitsOfMeasurement}
+                value={params.unitsOfMeasurement}
+                onChange={ev => this.onChange('unitsOfMeasurement', ev.target.value)}
+              />
+            </Row>
+          </Col>
+
+          {/* PRECISION */}
+          <Col s={12} m={4}>
+            <Row>
+              <TextField
+                style={fieldStyle}
+                type='number'
+                name='precision'
+                floatingLabelText='Precision'
+                hintText='Precision (eg. 0.5)'
+                errorText={errors.precision}
+                value={params.precision}
+                onChange={ev => this.onChange('precision', ev.target.value)}
+              />
+            </Row>
+          </Col>
+
+          {/* ACCURACY */}
+          <Col s={12} m={4}>
+            <Row>
+              <TextField
+                style={fieldStyle}
+                type='number'
+                name='accuracy'
+                floatingLabelText='Accuracy'
+                hintText='Accuracy (eg. 0.5)'
+                errorText={errors.accuracy}
+                value={params.accuracy}
+                onChange={ev => this.onChange('accuracy', ev.target.value)}
+              />
+            </Row>
+          </Col>
+
+        </Row>
+      </div>
     );
   }
 
@@ -309,75 +300,13 @@ export default class AttributeForm extends Component {
     if (params.type !== ATTRIBUTES_TYPES.STRING
     || params.format !== ATTRIBUTES_STRING_FORMATS.NONE) return;
 
-    const { enumeration } = this.state;
-
-    // Validate the key.
-    let { enumeration: enumError } = validatorEnum.validate({ enumeration }) || {};
-
-    // The key must not be duplicated.
-    const isDuplicated = params.enum.find(el => el === enumeration);
-    if (isDuplicated) {
-      enumError = 'Enumeration key is duplicated.';
-    }
-
     return (
-      <Row>
-        <Col s={12} m={6}>
-          <TextField
-            style={{ width: 'calc(100% - 100px)', marginRight: '5px' }}
-            type='text'
-            name='enum'
-            floatingLabelText='Enumerations'
-            hintText='Enter value'
-            errorText={enumeration ? enumError : ''}
-            value={enumeration}
-            onChange={ev => this.setState({ enumeration: ev.target.value })}
-          />
-          <RaisedButton
-            style={{ verticalAlign: 'top', marginTop: '30px' }}
-            label='Add'
-            disabled={!!enumError}
-            onClick={this.onEnumAdd}
-          />
-        </Col>
-        <Col s={12} m={6}>
-          {params.enum.map(el => (
-            <span key={el} style={{ display: 'inline-block', margin: '5px 5px 0 0' }}>
-              <Chip onRequestDelete={() => this.onEnumRemove(el)}>{el}</Chip>
-            </span>
-          ))}
-        </Col>
-      </Row>
+      <AttributeEnumeration
+        className='attribute-form__fields'
+        value={params.enum}
+        onChange={value => this.onChange('enum', value)}
+      />
     );
-  }
-
-  /**
-   * On add enumeration. This happens when the user has already set an enumeration
-   * to create but is not yet added.
-   */
-  onEnumAdd = () => {
-
-    const { params } = this.props.attribute;
-    const { enumeration } = this.state;
-
-    if (!enumeration) return;
-
-    this.setState({ enumeration: '' });
-
-    const enumValue = [ ...params.enum, enumeration ];
-    this.onChange('enum', enumValue);
-  }
-
-  /**
-   * On remove enumeration from the list when it was already added.
-   * @param  {String} key
-   */
-  onEnumRemove = (key) => {
-
-    const { params } = this.props.attribute;
-    const enumValue = params.enum.filter(el => el !== key);
-
-    this.onChange('enum', enumValue);
   }
 
   /**
@@ -425,12 +354,6 @@ export default class AttributeForm extends Component {
   isFormatDisabled () {
     const { params } = this.props.attribute;
     return params.type !== ATTRIBUTES_TYPES.STRING;
-  }
-
-  isTypeStringNumber () {
-    const { params } = this.props.attribute;
-    return params.type === ATTRIBUTES_TYPES.STRING
-    && params.format === ATTRIBUTES_STRING_FORMATS.NUMBER;
   }
 }
 

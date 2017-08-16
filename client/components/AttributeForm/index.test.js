@@ -29,7 +29,7 @@ const mountEl = function (ext) {
 describe('Components', function () {
   describe('AttributeForm', function () {
 
-    it('Has class ".attribute-form"', function () {
+    it('Element is "form.attribute-form"', function () {
       const el = mountEl();
       const actual = el.find('form.attribute-form');
       expect(actual).to.have.lengthOf(1);

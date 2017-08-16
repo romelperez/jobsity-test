@@ -4,18 +4,20 @@
   .row {
     margin-bottom: 0;
   }
+  .attribute-form__paper,
+  .attribute-form__fields {
+    animation: app-small-appear 200ms linear 1;
+  }
   .attribute-form__main-fields {
     //
   }
 
   &.attribute-form--only-main-fields {
-    .attribute-form__paper {
-      > .row {
-        display: none;
-      }
-      > .attribute-form__main-fields {
-        display: block;
-      }
+    .attribute-form__fields {
+      display: none;
+    }
+    .attribute-form__main-fields {
+      display: block;
     }
   }
 }

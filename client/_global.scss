@@ -93,3 +93,21 @@ select::-ms-expand {
 :-moz-placeholder { /* Firefox 18- */
   color: #777;
 }
+
+/**
+ * ANIMATIONS
+ */
+
+ @keyframes app-small-appear {
+   from {
+     opacity: 0.01;
+     transform: translateY(-1rem);
+   }
+   50% {
+     opacity: 0.25;
+   }
+   to {
+     opacity: 1;
+     transform: translateY(0);
+   }
+ }
