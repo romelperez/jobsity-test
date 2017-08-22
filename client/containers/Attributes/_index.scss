@@ -1,8 +1,21 @@
+@import 'client/settings';
+
 .attributes {
-  //
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  transition: all 200ms ease-out;
+  animation: app-small-appear 200ms ease-out 0ms 1;
 
   .attributes__main {
+    flex: 1;
     padding: 1rem 0;
+  }
+  .attributes__column {
+    //
+  }
+  .attributes__select {
+    width: 100% !important;
   }
   .attributes__attributes {
     display: block;
@@ -10,5 +23,35 @@
   }
   .attributes__opts {
     margin-top: 1rem;
+    text-align: right;
+  }
+  .tab {
+    display: none !important;
+  }
+  footer {
+    .row {
+      margin-bottom: 0;
+    }
+  }
+
+  @media #{$medium-and-up} {
+    .attributes__select {
+      display: none !important;
+    }
+    .tab {
+      display: block !important;
+    }
+  }
+
+  @media #{$large-and-up} {
+    .attributes__main {
+      > .row {
+        margin-bottom: 0;
+      }
+    }
+    .attributes__column {
+      max-height: calc(100vh - 150px);
+      overflow-y: auto;
+    }
   }
 }

@@ -26,3 +26,5 @@
 - [x] Use React always instead of jQuery
 - [x] Live JSON representation
 - [x] Responsive (plus)
+- [x] Replace Tabs for Menu on mobile
+- [x] Content scroll on desktop
