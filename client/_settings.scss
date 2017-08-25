@@ -10,9 +10,6 @@ $secondary-color: #00897B;
 $secondary-color-light: lighten($secondary-color, 15%);
 $secondary-color-dark: darken($secondary-color, 15%);
 
-$success-color: #31b50f;
-$error-color: #ec5840;
-
 //
 // TYPOGRAPHY
 //
@@ -21,17 +18,16 @@ $app-header-font: Roboto, sans-serif;
 $app-body-font: Roboto, sans-serif;
 
 //
-// MATERIALIZECSS
+// GRID
 //
 
-// Media Query Ranges
-$small-screen: 600px;
+$small-screen: 500px;
 $small-screen-up: $small-screen + 1;
 
-$medium-screen: 992px;
+$medium-screen: 768px;
 $medium-screen-up: $medium-screen;
 
-$large-screen: 1200px;
+$large-screen: 1100px;
 $large-screen-up: $large-screen + 1;
 
 $medium-and-up: "only screen and (min-width : #{$small-screen-up})";
@@ -40,9 +36,3 @@ $extra-large-and-up: "only screen and (min-width : #{$large-screen-up})";
 $small-and-down: "only screen and (max-width : #{$small-screen})";
 $medium-and-down: "only screen and (max-width : #{$medium-screen})";
 $medium-only: "only screen and (min-width : #{$small-screen-up}) and (max-width : #{$medium-screen})";
-
-// Grid
-$num-cols: 12;
-$gutter-width: 1.5rem;
-$element-top-margin: $gutter-width/3;
-$element-bottom-margin: ($gutter-width*2)/3;

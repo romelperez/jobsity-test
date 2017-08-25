@@ -1,0 +1,29 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+// Selection
+::selection {
+  background: $primary-color-dark; /* WebKit/Blink Browsers */
+  color: #fff;
+}
+::-moz-selection {
+  background: $primary-color-dark; /* Gecko Browsers */
+  color: #fff;
+}
+
+// Scrollbar
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-thumb {
+  border: 2px solid #f5f5f5;
+  border-radius: 12px;
+  background-color: #a9a9a9;
+
+  &:hover {
+    background-color: $primary-color;
+  }
+}

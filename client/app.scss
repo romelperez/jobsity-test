@@ -1,9 +1,10 @@
 @charset 'UTF-8';
 
 @import 'client/settings';
-@import 'client/global';
 
-// MaterializeCSS
-@import 'components/normalize';
-@import 'components/grid';
-@import 'client/materializecss-extend';
+@import 'normalize';
+
+@import 'client/design/global';
+@import 'client/design/typography';
+@import 'client/design/forms';
+@import 'client/design/animations';

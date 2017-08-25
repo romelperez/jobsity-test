@@ -1,0 +1,33 @@
+// Input number
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+// autofill de chrome y safari
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #f9fbfa inset !important;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #777;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: #777;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: #777;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: #777;
+}
