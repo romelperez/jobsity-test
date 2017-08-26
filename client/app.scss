@@ -3,6 +3,7 @@
 @import 'client/settings';
 
 @import 'normalize';
+@include normalize();
 
 @import 'client/design/global';
 @import 'client/design/typography';

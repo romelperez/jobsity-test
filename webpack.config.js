@@ -63,16 +63,20 @@ module.exports = {
         }
       },
     }, {
+      test: /\.css$/,
+      loader: 'style-loader!css-loader',
+      include: /flexboxgrid/
+    }, {
       test: /\.scss$/,
       use: extractSass.extract({
         use: [{
-          loader: 'css-loader'
+          loader: 'css-loader',
         }, {
           loader: 'sass-loader',
           options: {
             includePaths: [
               './',
-              './node_modules/materialize-css/sass'
+              './node_modules/normalize-scss/sass'
             ],
             sourceMap: !production,
             outputStyle: production ? 'compressed' : 'nested',

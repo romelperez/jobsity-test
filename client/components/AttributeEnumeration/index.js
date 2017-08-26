@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Row from 'react-materialize/lib/Row';
-import Col from 'react-materialize/lib/Col';
+import { Row, Col } from 'react-flexbox-grid';
 import Chip from 'material-ui/Chip';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
@@ -33,7 +32,7 @@ export default class AttributeFormStringNone extends Component {
 
     return (
       <Row className={className}>
-        <Col s={12} m={6}>
+        <Col xs={12} md={6}>
           <TextField
             style={{ width: 'calc(100% - 100px)', marginRight: '5px' }}
             type='text'
@@ -51,7 +50,7 @@ export default class AttributeFormStringNone extends Component {
             onClick={this.onEnumAdd}
           />
         </Col>
-        <Col s={12} m={6}>
+        <Col xs={12} md={6}>
           {value.map(el => (
             <span key={el} style={{ display: 'inline-block', margin: '5px 5px 0 0' }}>
               <Chip onRequestDelete={() => this.onEnumRemove(el)}>{el}</Chip>

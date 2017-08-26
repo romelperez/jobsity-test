@@ -3,8 +3,7 @@ import './_index.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import Row from 'react-materialize/lib/Row';
-import Col from 'react-materialize/lib/Col';
+import { Row, Col } from 'react-flexbox-grid';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import Toggle from 'material-ui/Toggle';
@@ -49,19 +48,19 @@ export default class AttributeForm extends Component {
         <Paper
           zDepth={1}
           className='attribute-form__paper'
-          style={{ position: 'relative', marginBottom: '1rem', padding: '1rem' }}
+          style={{ position: 'relative', marginBottom: '1rem', padding: '2rem 1.5rem 1.5rem' }}
         >
 
           {/* Remove */}
           <RaisedButton
-            style={{ position: 'absolute', right: '10px', top: '10px' }}
+            style={{ position: 'absolute', right: '1.5rem', top: '1rem' }}
             onClick={() => onRemove(_id)}
           >
             <i className='mdi mdi-delete' /> Remove
           </RaisedButton>
 
           {/* Toggle */}
-          <div style={{ position: 'absolute', right: '150px', top: '20px' }}>
+          <div style={{ position: 'absolute', right: '150px', top: '1.5rem' }}>
             <Toggle
               defaultToggled={isToggled}
               onToggle={(ev, val) => this.setState({ isToggled: val })}
@@ -71,105 +70,93 @@ export default class AttributeForm extends Component {
           <Row className='attribute-form__fields attribute-form__main-fields'>
 
             {/* NAME */}
-            <Col s={12} m={4}>
-              <Row>
-                <TextField
-                  style={fieldStyle}
-                  type='text'
-                  name='name'
-                  floatingLabelText='Name'
-                  hintText='Enter a name'
-                  errorText={errors.name}
-                  value={params.name}
-                  onChange={ev => this.onChange('name', ev.target.value)}
-                />
-              </Row>
+            <Col xs={12} md={4}>
+              <TextField
+                style={fieldStyle}
+                type='text'
+                name='name'
+                floatingLabelText='Name'
+                hintText='Enter a name'
+                errorText={errors.name}
+                value={params.name}
+                onChange={ev => this.onChange('name', ev.target.value)}
+              />
             </Col>
 
             {/* DESCRIPTION */}
-            <Col s={12} m={8}>
-              <Row>
-                <TextField
-                  style={fieldStyle}
-                  type='text'
-                  name='description'
-                  floatingLabelText='Description'
-                  hintText='Enter a description for your new attribute'
-                  errorText={errors.description}
-                  value={params.description}
-                  onChange={ev => this.onChange('description', ev.target.value)}
-                />
-              </Row>
+            <Col xs={12} md={8}>
+              <TextField
+                style={fieldStyle}
+                type='text'
+                name='description'
+                floatingLabelText='Description'
+                hintText='Enter a description for your new attribute'
+                errorText={errors.description}
+                value={params.description}
+                onChange={ev => this.onChange('description', ev.target.value)}
+              />
             </Col>
 
           </Row>
           <Row className='attribute-form__fields'>
 
             {/* DEVICE */}
-            <Col s={12} m={4}>
-              <Row>
-                <TextField
-                  style={fieldStyle}
-                  type='select'
-                  floatingLabelText='Device Resource Type'
-                  hintText='Default value'
-                  disabled
-                />
-              </Row>
+            <Col xs={12} md={4}>
+              <TextField
+                style={fieldStyle}
+                type='select'
+                floatingLabelText='Device Resource Type'
+                hintText='Default value'
+                disabled
+              />
             </Col>
 
             {/* DEFAULT VALUE */}
-            <Col s={12} m={8}>
-              <Row>
-                <TextField
-                  style={fieldStyle}
-                  type='text'
-                  name='defaultValue'
-                  floatingLabelText='Default value'
-                  hintText='Enter a default value'
-                  disabled={this.isDefaultValueDisabled()}
-                  errorText={errors.defaultValue}
-                  value={params.defaultValue}
-                  onChange={ev => this.onChange('defaultValue', ev.target.value)}
-                />
-              </Row>
+            <Col xs={12} md={8}>
+              <TextField
+                style={fieldStyle}
+                type='text'
+                name='defaultValue'
+                floatingLabelText='Default value'
+                hintText='Enter a default value'
+                disabled={this.isDefaultValueDisabled()}
+                errorText={errors.defaultValue}
+                value={params.defaultValue}
+                onChange={ev => this.onChange('defaultValue', ev.target.value)}
+              />
             </Col>
 
           </Row>
           <Row className='attribute-form__fields'>
 
             {/* DATA TYPE */}
-            <Col s={12} m={4}>
-              <Row>
-                <SelectField
-                  style={fieldStyle}
-                  name='type'
-                  floatingLabelText='Data Type'
-                  errorText={errors.type}
-                  value={params.type}
-                  onChange={(ev, ind, value) => this.onChange('type', value)}
-                >
-                  <MenuItem value={ATTRIBUTES_TYPES.STRING} primaryText='String' />
-                  <MenuItem value={ATTRIBUTES_TYPES.OBJECT} primaryText='Object' />
-                </SelectField>
-              </Row>
+            <Col xs={12} md={4}>
+              <SelectField
+                style={fieldStyle}
+                name='type'
+                floatingLabelText='Data Type'
+                errorText={errors.type}
+                value={params.type}
+                onChange={(ev, ind, value) => this.onChange('type', value)}
+              >
+                <MenuItem value={ATTRIBUTES_TYPES.STRING} primaryText='String' />
+                <MenuItem value={ATTRIBUTES_TYPES.OBJECT} primaryText='Object' />
+              </SelectField>
             </Col>
 
             {/* FORMAT */}
-            <Col s={12} m={8}>
-              <Row>
-                <SelectField
-                  style={fieldStyle}
-                  name='format'
-                  floatingLabelText='Format'
-                  disabled={this.isFormatDisabled()}
-                  errorText={errors.format}
-                  value={params.format}
-                  onChange={(ev, ind, value) => this.onChange('format', value)}
-                >
-                  {getFormats(params.type)}
-                </SelectField>
-              </Row>
+            <Col xs={12} md={8}>
+              <SelectField
+                style={fieldStyle}
+                name='format'
+                floatingLabelText='Format'
+                disabled={this.isFormatDisabled()}
+                errorText={errors.format}
+                value={params.format}
+                onChange={(ev, ind, value) => this.onChange('format', value)}
+              >
+                {getFormats(params.type)}
+              </SelectField>
             </Col>
 
           </Row>
@@ -202,86 +189,76 @@ export default class AttributeForm extends Component {
         <Row className='attribute-form__fields'>
 
           {/* RANGE MIN */}
-          <Col s={12} m={6}>
-            <Row>
-              <TextField
-                style={fieldStyle}
-                type='number'
-                name='rangeMin'
-                floatingLabelText='Range min'
-                hintText='Range minimum'
-                errorText={errors.rangeMin}
-                value={params.rangeMin}
-                onChange={ev => this.onChange('rangeMin', ev.target.value)}
-              />
-            </Row>
+          <Col xs={12} md={6}>
+            <TextField
+              style={fieldStyle}
+              type='number'
+              name='rangeMin'
+              floatingLabelText='Range min'
+              hintText='Range minimum'
+              errorText={errors.rangeMin}
+              value={params.rangeMin}
+              onChange={ev => this.onChange('rangeMin', ev.target.value)}
+            />
           </Col>
 
           {/* RANGE MAX */}
-          <Col s={12} m={6}>
-            <Row>
-              <TextField
-                style={fieldStyle}
-                type='number'
-                name='rangeMax'
-                floatingLabelText='Range max'
-                hintText='Range maximum'
-                errorText={errors.rangeMax}
-                value={params.rangeMax}
-                onChange={ev => this.onChange('rangeMax', ev.target.value)}
-              />
-            </Row>
+          <Col xs={12} md={6}>
+            <TextField
+              style={fieldStyle}
+              type='number'
+              name='rangeMax'
+              floatingLabelText='Range max'
+              hintText='Range maximum'
+              errorText={errors.rangeMax}
+              value={params.rangeMax}
+              onChange={ev => this.onChange('rangeMax', ev.target.value)}
+            />
           </Col>
 
         </Row>
         <Row className='attribute-form__fields'>
 
           {/* UNITS OF MEASUREMENT */}
-          <Col s={12} m={4}>
-            <Row>
-              <TextField
-                style={fieldStyle}
-                type='text'
-                name='unitsOfMeasurement'
-                floatingLabelText='Units of Measurement'
-                hintText='UoM (eg. mm)'
-                errorText={errors.unitsOfMeasurement}
-                value={params.unitsOfMeasurement}
-                onChange={ev => this.onChange('unitsOfMeasurement', ev.target.value)}
-              />
-            </Row>
+          <Col xs={12} md={4}>
+            <TextField
+              style={fieldStyle}
+              type='text'
+              name='unitsOfMeasurement'
+              floatingLabelText='Units of Measurement'
+              hintText='UoM (eg. mm)'
+              errorText={errors.unitsOfMeasurement}
+              value={params.unitsOfMeasurement}
+              onChange={ev => this.onChange('unitsOfMeasurement', ev.target.value)}
+            />
           </Col>
 
           {/* PRECISION */}
-          <Col s={12} m={4}>
-            <Row>
-              <TextField
-                style={fieldStyle}
-                type='number'
-                name='precision'
-                floatingLabelText='Precision'
-                hintText='Precision (eg. 0.5)'
-                errorText={errors.precision}
-                value={params.precision}
-                onChange={ev => this.onChange('precision', ev.target.value)}
-              />
-            </Row>
+          <Col xs={12} md={4}>
+            <TextField
+              style={fieldStyle}
+              type='number'
+              name='precision'
+              floatingLabelText='Precision'
+              hintText='Precision (eg. 0.5)'
+              errorText={errors.precision}
+              value={params.precision}
+              onChange={ev => this.onChange('precision', ev.target.value)}
+            />
           </Col>
 
           {/* ACCURACY */}
-          <Col s={12} m={4}>
-            <Row>
-              <TextField
-                style={fieldStyle}
-                type='number'
-                name='accuracy'
-                floatingLabelText='Accuracy'
-                hintText='Accuracy (eg. 0.5)'
-                errorText={errors.accuracy}
-                value={params.accuracy}
-                onChange={ev => this.onChange('accuracy', ev.target.value)}
-              />
-            </Row>
+          <Col xs={12} md={4}>
+            <TextField
+              style={fieldStyle}
+              type='number'
+              name='accuracy'
+              floatingLabelText='Accuracy'
+              hintText='Accuracy (eg. 0.5)'
+              errorText={errors.accuracy}
+              value={params.accuracy}
+              onChange={ev => this.onChange('accuracy', ev.target.value)}
+            />
           </Col>
 
         </Row>

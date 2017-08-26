@@ -2,7 +2,7 @@
 // COLORS
 //
 
-$primary-color: #1E88E5;
+$primary-color: #00bcd4;
 $primary-color-light: lighten($primary-color, 15%);
 $primary-color-dark: darken($primary-color, 15%);
 
@@ -21,13 +21,13 @@ $app-body-font: Roboto, sans-serif;
 // GRID
 //
 
-$small-screen: 500px;
+$small-screen: 480px;
 $small-screen-up: $small-screen + 1;
 
 $medium-screen: 768px;
 $medium-screen-up: $medium-screen;
 
-$large-screen: 1100px;
+$large-screen: 1024px;
 $large-screen-up: $large-screen + 1;
 
 $medium-and-up: "only screen and (min-width : #{$small-screen-up})";

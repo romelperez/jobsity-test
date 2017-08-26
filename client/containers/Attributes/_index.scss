@@ -9,7 +9,10 @@
 
   .attributes__main {
     flex: 1;
-    padding: 1rem 0;
+    padding: 1rem;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1400px;
   }
   .attributes__column {
     //
@@ -28,9 +31,18 @@
   .tab {
     display: none !important;
   }
+  .attributes__code {
+    font-size: 0.875rem;
+  }
   footer {
-    .row {
-      margin-bottom: 0;
+    background-color: #111;
+    color: #eee;
+
+    p {
+      margin: 1rem;
+    }
+    a {
+      color: #eee;
     }
   }
 
@@ -50,7 +62,7 @@
       }
     }
     .attributes__column {
-      max-height: calc(100vh - 150px);
+      height: calc(100vh - 150px);
       overflow-y: auto;
     }
   }

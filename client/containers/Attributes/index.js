@@ -2,8 +2,7 @@ import './_index.scss';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Row from 'react-materialize/lib/Row';
-import Col from 'react-materialize/lib/Col';
+import { Row, Col } from 'react-flexbox-grid';
 import AppBar from 'material-ui/AppBar';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -73,7 +72,7 @@ class Attributes extends Component {
         <main className='attributes__main'>
           <Row>
 
-            <Col s={12} l={7} className='attributes__column'>
+            <Col xs={12} md={7} className='attributes__column'>
 
               {/* Mobile Category Selector */}
               <SelectField
@@ -117,7 +116,7 @@ class Attributes extends Component {
 
               {/* Options */}
               <Row className='attributes__opts'>
-                <Col s={12}>
+                <Col xs={12}>
                   <RaisedButton
                     label={<span><i className='mdi mdi-content-save' /> Save Attributes</span>}
                     disabled={this.isSaveDisabled()}
@@ -127,9 +126,9 @@ class Attributes extends Component {
 
             </Col>
 
-            <Col s={12} l={5} className='attributes__column'>
+            <Col xs={12} md={5} className='attributes__column'>
               <p><b>Attributes as JSON:</b></p>
-              {this.getJSON()}
+              <div className='attributes__code'>{this.getJSON()}</div>
             </Col>
 
           </Row>
@@ -137,19 +136,15 @@ class Attributes extends Component {
 
         {/* Footer */}
         <footer>
-          <Row>
-            <Col s={12}>
-              <p>
-                &copy; 2017
-                {' '}
-                <a href='https://romelperez.com' target='romelperez'>Romel Pérez</a>,
-                {' '}
-                <a href='http://jobsity.com' target='jobsity'>Jobsity</a>,
-                {' '}
-                <a href='https://github.com/romelperez/jobsity-test' target='github'>Source Code</a>
-              </p>
-            </Col>
-          </Row>
+          <p>
+            <a href='https://romelperez.com' target='romelperez'>Romel Pérez</a>,
+            {' '}
+            <a href='http://jobsity.com' target='jobsity'>Jobsity</a>
+            {' - '}
+            <a href='https://github.com/romelperez/jobsity-test' target='github'>Source Code</a>
+            {' '}
+            Released under MIT License, 2017
+          </p>
         </footer>
 
       </div>

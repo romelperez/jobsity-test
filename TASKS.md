@@ -28,3 +28,4 @@
 - [x] Responsive (plus)
 - [x] Replace Tabs for Menu on mobile
 - [x] Content scroll on desktop
+- [x] Set a better grid system with React
