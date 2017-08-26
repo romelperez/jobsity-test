@@ -143,7 +143,7 @@ class Attributes extends Component {
             {' - '}
             <a href='https://github.com/romelperez/jobsity-test' target='github'>Source Code</a>
             {' '}
-            Released under MIT License, 2017
+            Released under Apache License 2.0, 2017
           </p>
         </footer>
 
