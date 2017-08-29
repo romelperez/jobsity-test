@@ -212,7 +212,7 @@ export default class AttributeForm extends Component {
               floatingLabelText='Range min'
               hintText='Range minimum'
               errorText={errors.rangeMin}
-              value={params.rangeMin}
+              value={params.rangeMin || ''}
               onChange={ev => this.onChange('rangeMin', ev.target.value)}
             />
           </Col>
@@ -226,7 +226,7 @@ export default class AttributeForm extends Component {
               floatingLabelText='Range max'
               hintText='Range maximum'
               errorText={errors.rangeMax}
-              value={params.rangeMax}
+              value={params.rangeMax || ''}
               onChange={ev => this.onChange('rangeMax', ev.target.value)}
             />
           </Col>
@@ -243,7 +243,7 @@ export default class AttributeForm extends Component {
               floatingLabelText='Units of Measurement'
               hintText='UoM (eg. mm)'
               errorText={errors.unitsOfMeasurement}
-              value={params.unitsOfMeasurement}
+              value={params.unitsOfMeasurement || ''}
               onChange={ev => this.onChange('unitsOfMeasurement', ev.target.value)}
             />
           </Col>
@@ -257,7 +257,7 @@ export default class AttributeForm extends Component {
               floatingLabelText='Precision'
               hintText='Precision (eg. 0.5)'
               errorText={errors.precision}
-              value={params.precision}
+              value={params.precision || ''}
               onChange={ev => this.onChange('precision', ev.target.value)}
             />
           </Col>
@@ -271,7 +271,7 @@ export default class AttributeForm extends Component {
               floatingLabelText='Accuracy'
               hintText='Accuracy (eg. 0.5)'
               errorText={errors.accuracy}
-              value={params.accuracy}
+              value={params.accuracy || ''}
               onChange={ev => this.onChange('accuracy', ev.target.value)}
             />
           </Col>

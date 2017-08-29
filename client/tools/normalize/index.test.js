@@ -39,11 +39,11 @@ describe('Normalize', function () {
     };
     const actual = normalize(params);
     const expected = {
-      unitsOfMeasurement: '',
-      rangeMin: '',
-      rangeMax: '',
-      precision: '',
-      accuracy: '',
+      unitsOfMeasurement: null,
+      rangeMin: null,
+      rangeMax: null,
+      precision: null,
+      accuracy: null,
     };
     expect(actual).to.contain(expected);
   });

@@ -29,3 +29,6 @@
 - [x] Replace Tabs for Menu on mobile
 - [x] Content scroll on desktop
 - [x] Set a better grid system with React
+- [x] FIX: Attribute name duplicity validation
+- [x] Attribute validation by fields
+- [x] Attributes format number properties should be null when not used

@@ -19,11 +19,11 @@ export default function normalize (params) {
   // different from NUMBER.
   if (params.type !== ATTRIBUTES_TYPES.STRING
   || params.format !== ATTRIBUTES_STRING_FORMATS.NUMBER) {
-    params.unitsOfMeasurement = '';
-    params.rangeMin = '';
-    params.rangeMax = '';
-    params.precision = '';
-    params.accuracy = '';
+    params.unitsOfMeasurement = null;
+    params.rangeMin = null;
+    params.rangeMax = null;
+    params.precision = null;
+    params.accuracy = null;
   }
 
   // If type is STRING but no format is set.

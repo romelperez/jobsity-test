@@ -37,11 +37,11 @@ export default function reducer (state = initial, { type, payload } = {}) {
           type: ATTRIBUTES_TYPES.STRING,
           format: ATTRIBUTES_STRING_FORMATS.NONE,
           enum: [],
-          rangeMin: '',
-          rangeMax: '',
-          unitsOfMeasurement: '',
-          precision: '',
-          accuracy: '',
+          rangeMin: null,
+          rangeMax: null,
+          unitsOfMeasurement: null,
+          precision: null,
+          accuracy: null,
           ...payload,
         }
       };
