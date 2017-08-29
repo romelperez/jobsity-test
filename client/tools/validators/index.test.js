@@ -92,4 +92,46 @@ describe('Validators', function () {
 
   });
 
+  describe('isValueDuplicated', function () {
+
+    it('Throw error if no getValues property was provied', function () {
+      const validator = vulcanval({
+        fields: [{
+          name: 'value',
+          validators: { isValueDuplicated: true }
+        }]
+      });
+      expect(function () {
+        validator.validate({ value: 'val' });
+      }).to.throw();
+    });
+
+    it('Return error if duplicated value', function () {
+      const getValues = () => ['val1', 'val2', 'val2'];
+      const validator = vulcanval({
+        fields: [{
+          name: 'value',
+          validators: { isValueDuplicated: { getValues } }
+        }]
+      });
+      const map = { value: 'val2' };
+      const actual = validator.validate(map);
+      expect(actual).to.have.property('value').to.be.a('string');
+    });
+
+    it('Return false if no duplicated value', function () {
+      const getValues = () => ['val1', 'val2', 'val3'];
+      const validator = vulcanval({
+        fields: [{
+          name: 'value',
+          validators: { isValueDuplicated: { getValues } }
+        }]
+      });
+      const map = { value: 'val2' };
+      const actual = validator.validate(map);
+      expect(actual).to.be.false;
+    });
+
+  });
+
 });

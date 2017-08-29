@@ -15,7 +15,7 @@ import { ATTRIBUTES_TYPES, ATTRIBUTES_STRING_FORMATS } from 'client/consts';
 import normalize from 'client/tools/normalize';
 import AttributeEnumeration from 'client/components/AttributeEnumeration';
 import getFormats from './get-formats';
-import validator from './validator';
+import makeValidator from './validator';
 
 const fieldStyle = { width: '100%' };
 
@@ -32,6 +32,21 @@ export default class AttributeForm extends Component {
       // The list of form errors. When empty object, no attribute errors.
       errors: {},
     };
+  }
+
+  componentWillMount () {
+
+    // Create the validator with a method to get the list of names.
+    this.validator = makeValidator({
+      getNames: () => this.props.names
+    });
+  }
+
+  componentDidUpdate () {
+
+    // It's probably that the names have been updated so
+    // we run the validation on the name.
+    this.hasUpdated('name');
   }
 
   render () {
@@ -287,40 +302,40 @@ export default class AttributeForm extends Component {
   }
 
   /**
-   * On field property update.
+   * On attribute property update.
    * @param  {String} name
    * @param  {*} value
    */
   onChange = (name, value) => {
 
-    const { attribute, names } = this.props;
-
-    // Validate attributes's name duplicity.
-    const attributeName = name === 'name' ? value : attribute.params.name;
-    const duplicatedName = !!names.
-      filter(el => el._id !== attribute._id).
-      find(el => el.name === attributeName);
-
-    const params = normalize({
-      ...attribute.params,
-      [name]: value
-    });
-
-    let errors = validator.validate(params);
-    const isValid = !duplicatedName && !errors;
-    const isToggled = !isValid ? false : this.state.isToggled;
-
-    // If the name is duplicated, set it as a property name error.
-    if (duplicatedName) {
-      errors = errors || {};
-      errors.name = "Attribute's name must be unique.";
-    }
-
-    const toUpdate = { _id: attribute._id, isValid, params };
-
-    this.setState({ errors: errors || {}, isToggled });
+    const { attribute } = this.props;
+    const params = normalize({ ...attribute.params, [name]: value });
+    const toUpdate = { _id: attribute._id, params };
 
     this.props.onChange(toUpdate);
+    setTimeout(() => this.hasUpdated(name), 0);
+  }
+
+  /**
+   * On attribute property updated. Run the validation of the attribute's data.
+   * @param  {String} name - THe name of the property that updated.
+   */
+  hasUpdated (name) {
+
+    const { attribute } = this.props;
+    const errors = this.validator.validate(attribute.params);
+    const error = (errors || {})[name];
+    const isValid = !errors;
+
+    if (this.state.errors[name] !== error) {
+      const isToggled = !isValid ? false : this.state.isToggled;
+      this.setState({ errors: errors || {}, isToggled });
+    }
+
+    if (attribute.isValid !== isValid) {
+      const toUpdate = { ...attribute, isValid };
+      this.props.onChange(toUpdate);
+    }
   }
 
   isDefaultValueDisabled () {
@@ -352,11 +367,13 @@ AttributeForm.propTypes = {
       accuracy: PropTypes.string,
     }),
   }).isRequired,
+  names: PropTypes.arrayOf(PropTypes.string),
   onChange: PropTypes.func,
   onRemove: PropTypes.func,
 };
 
 AttributeForm.defaultProps = {
+  names: [],
   onChange () {},
   onRemove () {},
 };

@@ -143,7 +143,7 @@ class Attributes extends Component {
             {' - '}
             <a href='https://github.com/romelperez/jobsity-test' target='github'>Source Code</a>
             {' '}
-            Released under Apache License 2.0, 2017
+            released under Apache License 2.0, 2017
           </p>
         </footer>
 
@@ -176,11 +176,12 @@ class Attributes extends Component {
 
     const { list: attributes } = this.props.attributes;
     const categoryAttributes = attributes.filter(el => el.params.categoryId === categoryId);
-    const names = attributes.map(el => ({ _id: el._id, name: el.params.name }));
 
     if (!categoryAttributes.length) {
       return <p>There are no attributes for this category.</p>;
     }
+
+    const names = attributes.map(el => el.params.name);
 
     return categoryAttributes.map(el => (
       <AttributeForm
