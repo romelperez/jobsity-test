@@ -1,6 +1,6 @@
 {
   "name": "jobsity-test",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "private": true,
   "scripts": {
     "start": "NODE_PATH=./ node server/index.js",
@@ -47,7 +47,7 @@
     "style-loader": "^0.18.2",
     "uuid": "^3.1.0",
     "validator": "^6.3.0",
-    "vulcanval": "^3.1.10",
+    "vulcanval": "^3.2.1",
     "webpack": "^2.7.0"
   },
   "devDependencies": {

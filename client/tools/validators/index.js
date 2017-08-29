@@ -1,4 +1,7 @@
 import vulcanval from 'vulcanval';
+import validateFields from './validate-fields';
+
+vulcanval.addMethod('validateFields', validateFields);
 
 vulcanval.extendLocale({
   id: 'en',

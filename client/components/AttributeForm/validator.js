@@ -35,13 +35,18 @@ export default function ({ getNames }) {
       name: 'type',
       required: true,
     }, {
+      name: 'format',
+      required: true,
+    }, {
       name: 'rangeMin',
+      listenTo: ['rangeMax'],
       validators: {
         isFloat: true,
         isRangeMin: { max: 'rangeMax' },
       },
     }, {
       name: 'rangeMax',
+      listenTo: ['rangeMin'],
       validators: {
         isFloat: true,
         isRangeMax: { min: 'rangeMin' },
@@ -53,12 +58,14 @@ export default function ({ getNames }) {
       },
     }, {
       name: 'precision',
+      listenTo: ['rangeMin', 'rangeMax'],
       validators: {
         isFloat: true,
         isRangePrecise: { min: 'rangeMin', max: 'rangeMax' }
       }
     }, {
       name: 'accuracy',
+      listenTo: ['rangeMin', 'rangeMax'],
       validators: {
         isFloat: true,
         isRangePrecise: { min: 'rangeMin', max: 'rangeMax' }

@@ -322,19 +322,36 @@ export default class AttributeForm extends Component {
    */
   hasUpdated (name) {
 
+    if (name === 'enum') return;
+
     const { attribute } = this.props;
     const errors = this.validator.validate(attribute.params);
-    const error = (errors || {})[name];
     const isValid = !errors;
 
-    if (this.state.errors[name] !== error) {
-      const isToggled = !isValid ? false : this.state.isToggled;
-      this.setState({ errors: errors || {}, isToggled });
+    // Get the fields status, each field affected by the update of the current field.
+    const fieldsErrors = this.validator.validateFields(name, attribute.params);
+    const errorsToUpdate = {};
+
+    // For each field, if it changed its validation status, update it.
+    fieldsErrors.forEach(field => {
+      if (this.state.errors[field.name] !== field.message) {
+        errorsToUpdate[field.name] = field.message;
+      }
+    });
+
+    const thereAreErrorsToUpdate = !!Object.keys(errorsToUpdate).length;
+
+    // Only if there are fields validation status changes, update the state.
+    if (thereAreErrorsToUpdate) {
+      this.setState({
+        errors: { ...this.state.errors, ...errorsToUpdate },
+        isToggled: !isValid ? false : this.state.isToggled,
+      });
     }
 
+    // If the field is not updated now,
     if (attribute.isValid !== isValid) {
-      const toUpdate = { ...attribute, isValid };
-      this.props.onChange(toUpdate);
+      this.props.onChange({ ...attribute, isValid });
     }
   }
 
